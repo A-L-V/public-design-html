@@ -1,0 +1,152 @@
+[
+    {
+        "day": 1,
+        "content__title": "El Inicio",
+        "content__description": "La aventura comienza. Busca en el bolsillo de tu abrigo favorito. 🧥",
+        "content__meta": "Pista #1"
+    },
+    {
+        "day": 2,
+        "content__title": "Dulce Espera",
+        "content__description": "Algo dulce te espera donde guardamos el café. 🍫",
+        "content__meta": "Pequeño detalle"
+    },
+    {
+        "day": 3,
+        "content__title": "Soundtrack Nuestro",
+        "content__description": "He creado una playlist con canciones que me recuerdan a ti. Revisa tu Spotify/WhatsApp. 🎵",
+        "content__meta": "Regalo Virtual"
+    },
+    {
+        "day": 4,
+        "content__title": "Relax Total",
+        "content__description": "Vale por un masaje de espalda de 20 minutos. Canjeable esta noche. 💆‍♀️",
+        "content__meta": "Vale Experiencia"
+    },
+    {
+        "day": 5,
+        "content__title": "Nuestra Primera Vez",
+        "content__description": "¿Recuerdas nuestra primera cita? He escondido algo donde guardas tus libros. 📚",
+        "content__meta": "Recuerdo"
+    },
+    {
+        "day": 6,
+        "content__title": "Noche de Cine",
+        "content__description": "Hoy yo elijo la película y pongo las palomitas. ¡Prepárate! 🎬",
+        "content__meta": "Cita en casa"
+    },
+    {
+        "day": 7,
+        "content__title": "Pista Helada",
+        "content__description": "El siguiente regalo tiene frío. Búscalo en el congelador. ❄️",
+        "content__meta": "Pista #2"
+    },
+    {
+        "day": 8,
+        "content__title": "Desconexión",
+        "content__description": "Vale por una noche sin cocinar ni lavar platos. Yo me encargo. 🍽️",
+        "content__meta": "Vale de Servicio"
+    },
+    {
+        "day": 9,
+        "content__title": "Viaje al Pasado",
+        "content__description": "Te envié un collage digital con nuestras mejores fotos de este año. 📸",
+        "content__meta": "Regalo Virtual"
+    },
+    {
+        "day": 10,
+        "content__title": "Bajo la Almohada",
+        "content__description": "Antes de dormir, revisa debajo de tu almohada. Hay una nota especial. 💌",
+        "content__meta": "Mensaje Oculto"
+    },
+    {
+        "day": 11,
+        "content__title": "Antojo Cumplido",
+        "content__description": "Vamos a comer tu postre favorito hoy. ¡Yo invito! 🍦",
+        "content__meta": "Salida Sorpresa"
+    },
+    {
+        "day": 12,
+        "content__title": "Mitad de Camino",
+        "content__description": "Busca en el cajón de los calcetines. Hay algo nuevo para ti. 🧦",
+        "content__meta": "Regalo Físico"
+    },
+    {
+        "day": 13,
+        "content__title": "Noche de Juegos",
+        "content__description": "Hoy jugamos a lo que tú quieras (videojuegos o mesa). Si gano, me das un beso. 🎲",
+        "content__meta": "Experiencia"
+    },
+    {
+        "day": 14,
+        "content__title": "Pista Tecnológica",
+        "content__description": "He cambiado el fondo de pantalla de tu laptop/tablet. Míralo. 💻",
+        "content__meta": "Sorpresa Virtual"
+    },
+    {
+        "day": 15,
+        "content__title": "Desayuno Real",
+        "content__description": "Vale por un desayuno en la cama mañana por la mañana. 🥞",
+        "content__meta": "Vale Experiencia"
+    },
+    {
+        "day": 16,
+        "content__title": "Donde nos arreglamos",
+        "content__description": "Busca detrás del espejo del baño. Hay una pista sobre tu regalo final. 🪞",
+        "content__meta": "Pista #3"
+    },
+    {
+        "day": 17,
+        "content__title": "Carta de Amor",
+        "content__description": "Te he escrito un correo electrónico programado para las 12:00 PM. Léelo. 📧",
+        "content__meta": "Mensaje Digital"
+    },
+    {
+        "day": 18,
+        "content__title": "Brindis",
+        "content__description": "Hay una botella pequeña escondida donde guardamos las toallas. 🥂",
+        "content__meta": "Regalo Oculto"
+    },
+    {
+        "day": 19,
+        "content__title": "Paseo Nocturno",
+        "content__description": "Vistete abrigada, vamos a ver luces de navidad hoy. 🎄",
+        "content__meta": "Cita"
+    },
+    {
+        "day": 20,
+        "content__title": "El Zapato",
+        "content__description": "Al estilo clásico: Revisa dentro de tu zapato izquierdo. 👠",
+        "content__meta": "Pista Clásica"
+    },
+    {
+        "day": 21,
+        "content__title": "Deseo Abierto",
+        "content__description": "Vale por 'Lo que tú quieras' (dentro de lo razonable 😉). ✨",
+        "content__meta": "Comodín"
+    },
+    {
+        "day": 22,
+        "content__title": "Video Dedicatoria",
+        "content__description": "Te grabé un video diciendo 10 cosas que amo de ti. Te lo envío ahora. 📹",
+        "content__meta": "Virtual"
+    },
+    {
+        "day": 23,
+        "content__title": "Cerca del Final",
+        "content__description": "Busca en la maleta de viaje. Hay algo para nuestra próxima aventura. ✈️",
+        "content__meta": "Regalo Temático"
+    },
+    {
+        "day": 24,
+        "content__title": "Nochebuena",
+        "content__description": "El regalo de hoy eres tú... pero también hay algo bajo el árbol con tu nombre. 🎁",
+        "content__meta": "Pre-Regalo"
+    },
+    {
+        "day": 25,
+        "content__title": "¡Feliz Navidad!",
+        "content__description": "La última pista: Mira en el lugar donde nos dimos el primer beso (o su representación en casa). ❤️",
+        "content__meta": "Gran Final"
+    }
+]
