@@ -1,6 +1,10 @@
 {
     "cube_mouse_hover_color_background": [
         "#1c2d3f",
-        "#cc0019"
+        "#cc0019",
+        "#008F39",
+        "#146B3A",
+        "#F8B229",
+        "#dedfe4"
     ]
 }
