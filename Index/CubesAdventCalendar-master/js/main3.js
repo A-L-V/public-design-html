@@ -683,7 +683,7 @@ import desyng from '../css/ramdomstyle.json' with {type: "json"};
 				<div class="content__block">
 					<h3 class="content__title">${i.content__title}</h3>
 					<p class="content__description">${i.content__description}</p>
-					<a class="content__meta">${i.content__meta}</a>
+					<a class="content__meta" href="${i.url}">${i.content__meta}</a>
 				</div>
 			`;
 

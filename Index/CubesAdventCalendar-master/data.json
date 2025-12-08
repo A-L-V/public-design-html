@@ -2,55 +2,73 @@
     {
         "day": 1,
         "content__title": "El Inicio",
-        "content__description": "La aventura comienza. Busca en el bolsillo de tu abrigo favorito. 🧥",
-        "content__meta": "Pista #1"
+        "content__description": "La aventura comienza. Te hago recordar el primera pagina que hize para ti. 🧥",
+        "content__meta": "Flores",
+        "url": "/public-design-html/2025/09/best%20Flower%20Yellos.html"
     },
     {
         "day": 2,
-        "content__title": "Dulce Espera",
-        "content__description": "Algo dulce te espera donde guardamos el café. 🍫",
-        "content__meta": "Pequeño detalle"
+        "content__title": "Toques",
+        "content__description": "Cuando te conoci, me dijiste que tu primer lenguaje de amor es contacto fisico y me encanta, x ende encontre esta pagina para ti",
+        "content__meta": "Cliks",
+        "url": "/public-design-html/2025/09/floresClickeado.html"
     },
     {
         "day": 3,
-        "content__title": "Soundtrack Nuestro",
-        "content__description": "He creado una playlist con canciones que me recuerdan a ti. Revisa tu Spotify/WhatsApp. 🎵",
-        "content__meta": "Regalo Virtual"
+        "content__title": "Nuestras Palabras de <br> Afirmación",
+        "content__description": "Este son nuestras palabras de afirmación nuestros, las cuales considero que son muy importantes en nuestro dia a dia",
+        "content__meta": "Lluvia de: ",
+        "url": "/public-design-html/2025/09/mensajes%20amor.html"
+    },
+{
+        "day": 4,
+        "content__title": "Mensajito",
+        "content__description": "Mas palabras de afirmación que tu y yo solo comprenderemos",
+        "content__meta": "Convivencia",
+        "url": "/public-design-html/2025/09/texto%20romantico%20snoopy.html"
+    },
+    
+    {
+        "day": 5,
+        "content__title": "Mi Corazon",
+        "content__description": "Se ma acaba el texto y las ideas las quiero guardar para despues del 12, pero quiero decirte que estos mensajitos son llegamos desde mi corazon y con el ezfuerso de buscarlo",
+        "content__meta": "Mas Corazones",
+        "url": "/public-design-html/2025/09/Corazon%20cosmico%20con%20flechas.html"
+    },
+        {
+        "day": 6,
+        "content__title": "Mi Amor",
+        "content__description": "Queria reconfirmarte que calidad es tiempo de calidad es excelente, asi mismo el servicio y limpianzo la cocina aja. Asi mismo no veas estos regalos como simples y rapidos, vienen de corazon y claro apresurados, sin embargo te afirmo que conmigo si planeo algo bonito lo hare con tiempo. ❄️",
+        "content__meta": "Amor mio",
+        "url": "/public-design-html/2025/09/te%20amo%20mas%20mensaje.html"
     },
     {
-        "day": 4,
+        "day": 7,
+        "content__title": "Dedicatoria",
+        "content__description": "Ya no tengo palabras, osea si y no ademas otras que no se como decirte",
+        "content__meta": "Mensajito",
+        "url": "/public-design-html/2025/09/dedicatoria%20animada.html"
+    },
+    
+        {
+        "day": 8,
+        "content__title": "Tmo",
+        "content__description": "Ya te dije que te amo?",
+        "content__meta": "Tmo",
+        "url": "/public-design-html/2025/09/Teamo.html"
+    },
+    {
+        "day": 18,
         "content__title": "Relax Total",
         "content__description": "Vale por un masaje de espalda de 20 minutos. Canjeable esta noche. 💆‍♀️",
         "content__meta": "Vale Experiencia"
     },
-    {
-        "day": 5,
-        "content__title": "Nuestra Primera Vez",
-        "content__description": "¿Recuerdas nuestra primera cita? He escondido algo donde guardas tus libros. 📚",
-        "content__meta": "Recuerdo"
-    },
-    {
-        "day": 6,
-        "content__title": "Noche de Cine",
-        "content__description": "Hoy yo elijo la película y pongo las palomitas. ¡Prepárate! 🎬",
-        "content__meta": "Cita en casa"
-    },
-    {
-        "day": 7,
-        "content__title": "Pista Helada",
-        "content__description": "El siguiente regalo tiene frío. Búscalo en el congelador. ❄️",
-        "content__meta": "Pista #2"
-    },
-    {
-        "day": 8,
-        "content__title": "Desconexión",
-        "content__description": "Vale por una noche sin cocinar ni lavar platos. Yo me encargo. 🍽️",
-        "content__meta": "Vale de Servicio"
-    },
+
+    
     {
         "day": 9,
         "content__title": "Viaje al Pasado",
-        "content__description": "Te envié un collage digital con nuestras mejores fotos de este año. 📸",
+        "content__description": "Este es un reto, He escondido algo donde guardas tus libros. 📚",
         "content__meta": "Regalo Virtual"
     },
     {
@@ -58,12 +76,6 @@
         "content__title": "Bajo la Almohada",
         "content__description": "Antes de dormir, revisa debajo de tu almohada. Hay una nota especial. 💌",
         "content__meta": "Mensaje Oculto"
-    },
-    {
-        "day": 11,
-        "content__title": "Antojo Cumplido",
-        "content__description": "Vamos a comer tu postre favorito hoy. ¡Yo invito! 🍦",
-        "content__meta": "Salida Sorpresa"
     },
     {
         "day": 12,
@@ -97,16 +109,12 @@
     },
     {
         "day": 17,
-        "content__title": "Carta de Amor",
-        "content__description": "Te he escrito un correo electrónico programado para las 12:00 PM. Léelo. 📧",
-        "content__meta": "Mensaje Digital"
+        "content__title": "Soundtrack Nuestro",
+        "content__description": "He creado una playlist con canciones que me recuerdan a ti. Revisa tu Spotify/WhatsApp. 🎵",
+        "content__meta": "Regalo Virtual",
+        "url": "/public-design-html/2025/09/dedicatoria%20animada.html"
     },
-    {
-        "day": 18,
-        "content__title": "Brindis",
-        "content__description": "Hay una botella pequeña escondida donde guardamos las toallas. 🥂",
-        "content__meta": "Regalo Oculto"
-    },
+
     {
         "day": 19,
         "content__title": "Paseo Nocturno",
