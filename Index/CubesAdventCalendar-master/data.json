@@ -57,22 +57,24 @@
         "content__meta": "Tmo",
         "url": "/public-design-html/2025/09/Teamo.html"
     },
-    {
-        "day": 18,
-        "content__title": "Relax Total",
-        "content__description": "Vale por un masaje de espalda de 20 minutos. Canjeable esta noche. 💆‍♀️",
-        "content__meta": "Vale Experiencia"
-    },
-
-    
-    {
+        {
         "day": 9,
-        "content__title": "Viaje al Pasado",
-        "content__description": "Este es un reto, He escondido algo donde guardas tus libros. 📚",
-        "content__meta": "Regalo Virtual"
+        "content__title": "Escondidos",
+        "content__description": "Este es un reto, He escondido 2 cosas en tu casa (adivina cuales son), te dejare 2 pistas de donde estan: <br>  1. Esta en el inicio en nuestro primer video eliminado.  <br> 2. Esta en un exsucio lugar ",
+        "content__meta": "Puedes obtener mas pistas conforme pasa el dia de hoy"
     },
     {
         "day": 10,
+        "content__title": "Soundtrack Nuestro",
+        "content__description": "He creado una playlist con canciones que me recuerdan a ti. Revisa tu Spotify. 🎵",
+        "content__meta": "Regalo Virtual"
+    },
+
+
+    
+
+    {
+        "day": 11,
         "content__title": "Bajo la Almohada",
         "content__description": "Antes de dormir, revisa debajo de tu almohada. Hay una nota especial. 💌",
         "content__meta": "Mensaje Oculto"
@@ -107,12 +109,17 @@
         "content__description": "Busca detrás del espejo del baño. Hay una pista sobre tu regalo final. 🪞",
         "content__meta": "Pista #3"
     },
-    {
+        {
         "day": 17,
-        "content__title": "Soundtrack Nuestro",
-        "content__description": "He creado una playlist con canciones que me recuerdan a ti. Revisa tu Spotify/WhatsApp. 🎵",
-        "content__meta": "Regalo Virtual",
-        "url": "/public-design-html/2025/09/dedicatoria%20animada.html"
+        "content__title": "Relax Total",
+        "content__description": "Vale por un masaje de espalda de 20 minutos. Canjeable esta noche. 💆‍♀️",
+        "content__meta": "Vale Experiencia"
+    },
+    {
+        "day": 18,
+        "content__title": "Relax Total",
+        "content__description": "Vale por un masaje de espalda de 20 minutos. Canjeable esta noche. 💆‍♀️",
+        "content__meta": "Vale Experiencia"
     },
 
     {
