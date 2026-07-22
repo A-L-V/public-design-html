@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cashew Generator URL</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0d1117;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        padding: 1rem;
+      }
+
+      .card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      }
+
+      h1 {
+        color: #e6edf3;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      label {
+        color: #8b949e;
+        font-size: 0.85rem;
+        display: block;
+        margin-bottom: 0.35rem;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.7rem 0.85rem;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        background: #0d1117;
+        color: #e6edf3;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border 0.2s;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #58a6ff;
+      }
+
+      select {
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.85rem center;
+      }
+
+      input::placeholder {
+        color: #484f58;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.25rem;
+      }
+
+      button {
+        flex: 1;
+        padding: 0.7rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+
+      button:hover {
+        opacity: 0.85;
+      }
+
+      .btn-next {
+        background: #21262d;
+        color: #e6edf3;
+        border: 1px solid #30363d;
+      }
+
+      .btn-confirm {
+        background: #238636;
+        color: #fff;
+      }
+
+      .result {
+        margin-top: 1.25rem;
+        padding: 0.85rem 1rem;
+        border-radius: 8px;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        min-height: 48px;
+        word-break: break-all;
+      }
+
+      .result a {
+        color: #58a6ff;
+        text-decoration: none;
+      }
+
+      .result a:hover {
+        text-decoration: underline;
+      }
+
+      .result.empty {
+        color: #484f58;
+        display: flex;
+        align-items: center;
+      }
+
+      @media (max-width: 500px) {
+        .card {
+          padding: 1.25rem;
+        }
+
+        .btn-row {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Cashew Generator URL</h1>
+      <div class="form-group">
+        <label for="selector">Plataforma</label>
+        <select id="selectorPlataforma">
+          <option value="web">web</option>
+          <option value="mobile">mobile</option>
+          <option selected="selected" value="betaWeb">betaWeb</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="selector">Tipo</label>
+        <select id="selectorTipo">
+          <option value="correctBalance">correctBalance</option>
+          <option value="addTransfer">addTransfer</option>
+          <option selected="selected" value="addTransaction">addTransaction</option>
+          <option value="addWithIntelligence">addWithIntelligence</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="search">Query</label>
+        <input
+          type="text"
+          id="search"
+          placeholder="Gaste 5 sol en restaurante el 3 jun"
+        />
+      </div>
+      <div class="btn-row">
+        <button class="btn-next" id="nextBtn">Next</button>
+        <button class="btn-confirm" id="confirmBtn">Confirm</button>
+      </div>
+      <div class="result empty" id="result">Waiting for search...</div>
+    </div>
+    <script type="module">
+      import { z } from "https://esm.sh/zod";
+      class CashewAppLinks {
+
+        /**
+         * @param {'mobile'|'web'} platform - Plataforma destino
+         */
+        constructor(platform = "mobile") {
+          switch (platform) {
+            case "mobile":
+              this.baseUrl = "https://cashewapp.web.app";
+              break;
+            case "web":
+              this.baseUrl = "https://budget-track.web.app";
+              break;
+            case "betaWeb":
+              this.baseUrl = "https://budget-track-beta.web.app";
+              break;
+            default:
+              throw new Error("Plataforma no soportada. Usa 'mobile' o 'web'.");
+          }
+
+          const configFromAPP = {
+            accounts: [
+              "Bank",
+              "Interbank Sueldo",
+              "Bcp/Yape",
+              "Intebank",
+              "American Express",
+              "Io Bcp",
+            ],
+            categories: {
+              "Corrección de equilibrio": ["Tardanza"],
+              Comidas: ["Delivery", "Restaurante", "Tia Veneno"],
+              Travel: [],
+              Ingreso: ["Regalo", "Freelancer", "Taxi service"],
+              Comestibles: ["Mercado", "Snacks"],
+              Compras: [
+                "Cosplay",
+                "Electrodomésticos",
+                "Ropa",
+                "Aseo",
+                "Muebles",
+              ],
+              Transporte: ["GLP", "Delivery", "Gasolina", "Micro", "Taxi"],
+              Entretenimiento: ["Trago", "Fiesta"],
+              Factura: ["Carro", "Internet"],
+              Regalo: [],
+              Trabajo: [],
+              Otros: ["Pagos tarjeta", "Devolucion", "Personas"],
+            },
+            addableBudgets: [],
+            goals: [],
+            longTermLoans: ["Aldair", "Ricardo", "Nelly", "Elisa", "Los Tios"],
+          };
+
+          this.config = {
+            wallet: configFromAPP.accounts,
+            category: Object.keys(configFromAPP.categories),
+            subcategory: Object.values(configFromAPP.categories).flat(),
+            budget: configFromAPP.addableBudgets,
+            goal: configFromAPP.goals,
+            loan: configFromAPP.longTermLoans,
+          };
+          this.transactionSchema = z.object({
+            amount: z.number({ required_error: "Monto obligatorio" }),
+            title: z.string().min(1, "Título obligatorio"),
+            category: z.enum(this.config.category),
+            subcategory: z
+              .enum(this.config.subcategory)
+              .optional()
+              .or(z.literal("")),
+            wallet: z.enum(this.config.wallet),
+            budget: z.enum(this.config.budget).optional().or(z.literal("")),
+            goal: z.enum(this.config.goal).optional().or(z.literal("")),
+            loan: z.enum(this.config.loan).optional().or(z.literal("")),
+            objective: z.string().optional().or(z.literal("")),
+            note: z.string().optional().or(z.literal("")),
+            dateCreated: z.string().datetime().optional().or(z.literal("")),
+          });
+
+          this.transferSchema = z.object({
+            amount: z.number({ required_error: "Monto obligatorio" }),
+            title: z.string().min(1, "Título obligatorio"),
+            walletFrom: z.enum(this.config.wallet),
+            walletTo: z.enum(this.config.wallet),
+            note: z.string().optional().or(z.literal("")),
+            dateCreated: z.string().datetime().optional().or(z.literal("")),
+          });
+
+          /*
+                subcategory: 
+                category:
+                wallet:
+                budget:
+                goal:
+                loan:
+                objective:
+                dateCreated:
+                amount:
+                title:
+                note:
+                */
+        }
+
+        /**
+         * Construye la URL final codificando los parámetros automáticamente.
+         * @private
+         */
+        #buildUrl(endpoint, params = {}) {
+          const url = new URL(`${this.baseUrl}${endpoint}`);
+
+          for (const [key, value] of Object.entries(params)) {
+            if (value !== undefined && value !== null && value !== "") {
+              const parsedValue =
+                typeof value === "object" ? JSON.stringify(value) : value;
+              url.searchParams.append(key, parsedValue);
+            }
+          }
+
+          return url.toString();
+        }
+
+        /**
+         * Validar futura entrada de transacción contra la configuración predefinida.
+         * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
+         */
+        verify(data, schemaType = this.transactionSchema) {
+          const result = schemaType.safeParse(data);
+          if (!result.success) {
+            // Iteramos sobre los errores estructurados
+            result.error.issues.forEach((issue) => {
+              const campo = issue.path.join("."); // Obtiene el nombre de la etiqueta
+              const mensaje = issue.message; // Obtiene tu mensaje personalizado
+
+              console.log(`${campo}: ${mensaje}`);
+            });
+          }
+          //if (!result.success) throw new Error("Datos de transacción inválidos. Revisa la consola.");
+          return result;
+        }
+
+        /**
+         * Genera enlace para una o múltiples transacciones.
+         * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
+         * @param {boolean} withUI - Si es true, usa /addTransactionRoute
+         */
+        addTransaction(data, withUI = false) {
+          const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
+          this.verify(data, this.transactionSchema);
+          return this.#buildUrl(endpoint, data);
+        }
+
+        /**
+         * Genera enlace para transacciones en lote mediante JSON.
+         * @param {Array<Object>} transactions - Lista de transacciones
+         * @param {boolean} withUI
+         */
+        addMultipleTransactions(transactions, withUI = false) {
+          const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
+          return this.#buildUrl(endpoint, { JSON: { transactions } });
+        }
+
+        addTransfer(data) {
+          this.verify(data, this.transferSchema);
+          return this.#buildUrl("/addTransferRoute", data);
+        }
+
+        /**
+         * Genera enlace para corregir el balance de una cuenta.
+         */
+        correctBalance(data, withUI = false) {
+          const endpoint = withUI
+            ? "/correctTotalBalanceRoute"
+            : "/correctTotalBalance";
+          return this.#buildUrl(endpoint, data);
+        }
+
+        /**
+         * Genera enlace para añadir transacciones mediante IA.
+         */
+        addWithIntelligence(prompt, withUI = false) {
+          const endpoint = withUI
+            ? "/addTransactionRoute/intelligence"
+            : "/addTransaction/intelligence";
+          return this.#buildUrl(endpoint, { prompt });
+        }
+
+        /**
+         * Abre páginas específicas de la app (ej. searchTransactionsPage)
+         */
+        openPage(pageName, query = null) {
+          const params = query ? { query } : {};
+          return this.#buildUrl(`/${pageName}`, params);
+        }
+
+        parsearFecha(str) {
+          if (!str) return undefined;
+          if (str instanceof Date) return str; // Por si ExcelJS ya lo lee como objeto Date
+
+          const [fecha, hora] = str.toString().split(" ");
+          const [dia, mes, anio] = fecha.split("/");
+          const [hh, mm, ss] = hora ? hora.split(":") : [0, 0, 0];
+
+          // El mes va de 0 a 11 en JavaScript, por eso se resta 1
+          return `$dia/$mes/$anio  $hh $mm`;
+        }
+
+        obtenerNombrePrestamo(texto) {
+          if (!texto) return "";
+          // Busca una palabra (letras) justo ANTES o justo DESPUÉS de "prestamo" o "prestamos"
+          texto = texto.toLowerCase();
+          const searchPrestamo =
+            texto.includes("prestamo") || texto.includes("prestamos");
+          if (!searchPrestamo) return "";
+          const palabrasTexto = texto.toLowerCase().split(/\s+/);
+
+          const encontrada = palabrasTexto.find((palabra) =>
+            this.config.loan.some((name) => name.toLowerCase() === palabra),
+          );
+          return this.config.loan.find(
+            (loan) => loan.toLowerCase() === encontrada,
+          );
+        }
+
+        obtenerSubCategoria(texto) {
+          if (!texto) return "";
+          const palabrasTexto = texto.toLowerCase().split(/\s+/);
+          const encontrada = palabrasTexto.find(
+            (palabra) =>
+              this.config.subcategory.some(
+                (sub) => sub.toLowerCase() === palabra,
+              ),
+            //|| this.config.category.some(cat => cat.toLowerCase() === palabra)
+          );
+          if (!encontrada) return null;
+          return this.config.subcategory.find(
+            (sub) => sub.toLowerCase() === encontrada,
+          );
+        }
+
+        obtenerNombreWallet(texto) {
+          if (!texto) return "";
+          // Busca una palabra (letras) justo ANTES o justo DESPUÉS de "prestamo" o "prestamos"
+          texto = texto.toLowerCase();
+          const palabrasTexto = texto.toLowerCase().split(/\s+/);
+
+          const encontrada = palabrasTexto.find((palabra) =>
+            this.config.wallet.some((name) => name.toLowerCase() === palabra),
+          );
+          return this.config.wallet.find(
+            (name) => name.toLowerCase() === encontrada,
+          );
+        }
+
+        obtenerMonto(texto) {
+          if (!texto) return null;
+          const match = texto.replace(/\s+/g, "").match(/\d+(?:\.\d+)?/);
+          if (texto.includes("pague")) {
+            // Procesar el texto para obtener el monto específico
+            return match ? -Math.abs(Number(match[0])) : null; // Retorna el monto como negativo
+          } else {
+            return match ? Number(match[0]) : null;
+          }
+        }
+
+        obtenerFecha(texto) {
+          const regexFecha =
+            /\b(\d{1,2})(?:\s+(?:de\s+)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*|[/-](\d{1,2}))\b/i;
+
+          // exec() garantiza que siempre obtengamos los grupos capturados
+          const match = regexFecha.exec(texto);
+
+          if (!match) return null;
+
+          // Forzamos a String para evitar cualquier error de undefined con padStart
+          const dia = String(match[1]).padStart(2, "0");
+          let mes = match[3] ? String(match[3]).padStart(2, "0") : null;
+
+          if (!mes && match[2]) {
+            const meses = {
+              ene: "01",
+              feb: "02",
+              mar: "03",
+              abr: "04",
+              may: "05",
+              jun: "06",
+              jul: "07",
+              ago: "08",
+              sep: "09",
+              oct: "10",
+              nov: "11",
+              dic: "12",
+            };
+            mes = meses[match[2].toLowerCase()];
+          }
+
+          const ahora = new Date();
+          const anio = ahora.getFullYear();
+          const hh = String(ahora.getHours()).padStart(2, "0");
+          const mm = String(ahora.getMinutes()).padStart(2, "0");
+
+          return {
+            value: `${dia}/${mes}/${anio} ${hh}:${mm}`,
+            encontrado: match,
+          };
+        }
+
+        corregirToFormatTransaction(texto, data) {
+          const fecha = this.obtenerFecha(texto);
+          // si indica "pague" el monto se hace negativo, primero monto, si loan prestamo [nombre],
+          let transaction = {
+            amount: data?.amount || this.obtenerMonto(texto),
+            category: data?.category || "",
+            subcategory: data?.subcategory || this.obtenerSubCategoria(texto),
+            wallet: data?.wallet || this.obtenerNombreWallet(texto),
+            budget: data?.budget || "",
+            goal: data?.goal || "",
+            loan: data?.loan || this.obtenerNombrePrestamo(texto),
+            objective: data?.objective || "",
+            note: data?.note || texto || "",
+            dateCreated: data?.dateCreated || fecha.value,
+          };
+          const variables = [
+            transaction.amount,
+            transaction.category,
+            transaction.subcategory,
+            transaction.wallet,
+            fecha.encontrado,
+          ]
+            .flat(Infinity)
+            .filter((v) => v) // Elimina null, undefined y ""
+            .map((v) => String(v).trim()) // Convierte a texto y quita espacios
+            .filter((v) => v.length > 0);
+          console.log(variables);
+
+          const patron = variables.join("|");
+          const regex = new RegExp(patron, "gi");
+          transaction.title =
+            data?.title || texto.replace(regex, "").replace(/\s+/g, " ").trim();
+
+          return transaction;
+        }
+      }
+     
+      const selectorPlataforma = document.getElementById("selectorPlataforma");
+      const selectorTipo = document.getElementById("selectorTipo");
+      const searchInput = document.getElementById("search");
+      const confirmBtn = document.getElementById("confirmBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const resultEl = document.getElementById("result");
+
+      function updateResult() {
+        const typeDispotivo = selectorPlataforma.value;
+        const cashew = new CashewAppLinks(typeDispotivo);
+        const nameRequest = selectorTipo.value;
+        console.log(nameRequest)
+        const query = searchInput.value.trim();
+        if (!query) {
+          resultEl.className = "result empty";
+          resultEl.innerHTML = "Please enter a search query";
+          return;
+        }
+        var base = ""
+        switch(nameRequest){
+            case "addTransaction":
+                const transactionFormatAddTransaction = cashew.corregirToFormatTransaction(query);
+                const baseAddTransaction = cashew.addTransaction(transactionFormatAddTransaction);
+                base = baseAddTransaction;
+                break;
+
+            case "correctBalance":
+                const transactionFormatCorrectBalance = cashew.corregirToFormatTransaction(query);
+                const baseCorrectBalance = cashew.correctBalance(transactionFormatCorrectBalance);
+                base = baseCorrectBalance;
+                break;
+            case "addTransfer":
+                const transactionFormatAddTransfer = cashew.corregirToFormatTransaction(query);
+                const baseAddTransfer = cashew.addTransfer(transactionFormatAddTransfer);
+                base = baseAddTransfer;
+                break;
+            case "addWithIntelligence":
+                const baseAddWithIntelligence = cashew.addWithIntelligence(query);
+                base = baseAddWithIntelligence;
+                break;   
+        }
+
+
+        const url = base;
+        resultEl.className = "result";
+        resultEl.innerHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+      }
+
+      confirmBtn.addEventListener("click", updateResult);
+
+      nextBtn.addEventListener("click", () => {
+        selectorTipo.selectedIndex =
+          (selectorTipo.selectedIndex + 1) % selectorTipo.options.length;
+        if (
+          selectorTipo.selectedIndex === 0 &&
+          selectorTipo.options[0].value === ""
+        )
+          selectorTipo.selectedIndex = 1;
+      });
+
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") updateResult();
+      });
+    </script>
+  </body>
+</html>
