@@ -149,6 +149,37 @@
           flex-direction: column;
         }
       }
+
+      #sugerencias {
+        position: absolute;
+        background: #121212;
+        border: 1px solid #333;
+        display: none;
+        z-index: 10;
+        overflow-x: auto;
+        white-space: nowrap; /* Evita que salte de línea */
+        padding: 5px;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      /* Cada sugerencia al costado de la otra */
+      .sugerencia-item {
+        display: inline-block;
+        color: #ccc; /* Texto por defecto */
+        background: #2a2a2a;
+        padding: 6px 12px;
+        margin-right: 6px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-family: sans-serif;
+        font-size: 14px;
+      }
+      /* Efecto al pasar el mouse o ser la primera opción (para el Tab) */
+      .sugerencia-item:hover,
+      .sugerencia-item.activa {
+        color: #007bff; /* Texto azul */
+        background: #000;
+      }
     </style>
   </head>
 
@@ -166,9 +197,10 @@
       <div class="form-group">
         <label for="selector">Tipo</label>
         <select id="selectorTipo">
+          <option selected="selected" value="auto">auto</option>
           <option value="correctBalance">correctBalance</option>
           <option value="addTransfer">addTransfer</option>
-          <option selected="selected" value="addTransaction">addTransaction</option>
+          <option value="addTransaction">addTransaction</option>
           <option value="addWithIntelligence">addWithIntelligence</option>
         </select>
       </div>
@@ -178,7 +210,9 @@
           type="text"
           id="search"
           placeholder="Gaste 5 sol en restaurante el 3 jun"
+          list="lista-dinamica"
         />
+        <div id="sugerencias"></div>
       </div>
       <div class="btn-row">
         <button class="btn-next" id="nextBtn">Next</button>
@@ -188,34 +222,21 @@
     </div>
     <script type="module">
       import { z } from "https://esm.sh/zod";
-      class CashewAppLinks {
 
+      class CashewAppLinks {
         /**
          * @param {'mobile'|'web'} platform - Plataforma destino
          */
         constructor(platform = "mobile") {
-          switch (platform) {
-            case "mobile":
-              this.baseUrl = "https://cashewapp.web.app";
-              break;
-            case "web":
-              this.baseUrl = "https://budget-track.web.app";
-              break;
-            case "betaWeb":
-              this.baseUrl = "https://budget-track-beta.web.app";
-              break;
-            default:
-              throw new Error("Plataforma no soportada. Usa 'mobile' o 'web'.");
-          }
-
+          this.baseUrl = this.getBaseURL(platform);
           const configFromAPP = {
             accounts: [
-              "Bank",
-              "Interbank Sueldo",
-              "Bcp/Yape",
-              "Intebank",
+              "Efectivo",
+              "Sueldo Interbank",
+              "Yape BCP",
+              "Interbank",
               "American Express",
-              "Io Bcp",
+              "Io",
             ],
             categories: {
               "Corrección de equilibrio": ["Tardanza"],
@@ -268,35 +289,45 @@
           });
 
           this.transferSchema = z.object({
-            amount: z.number({ required_error: "Monto obligatorio" }),
+            amountFrom: z.number({ required_error: "Monto obligatorio" }),
+            amountTo: z.number(),
             title: z.string().min(1, "Título obligatorio"),
             walletFrom: z.enum(this.config.wallet),
             walletTo: z.enum(this.config.wallet),
-            note: z.string().optional().or(z.literal("")),
             dateCreated: z.string().datetime().optional().or(z.literal("")),
           });
-
-          /*
-                subcategory: 
-                category:
-                wallet:
-                budget:
-                goal:
-                loan:
-                objective:
-                dateCreated:
-                amount:
-                title:
-                note:
-                */
         }
 
         /**
          * Construye la URL final codificando los parámetros automáticamente.
          * @private
          */
-        #buildUrl(endpoint, params = {}) {
-          const url = new URL(`${this.baseUrl}${endpoint}`);
+        getBaseURL(platform) {
+          let baseUrl = "";
+          switch (platform) {
+            case "mobile":
+              baseUrl = "https://cashewapp.web.app";
+              break;
+            case "web":
+              baseUrl = "https://budget-track.web.app";
+              break;
+            case "betaWeb":
+              baseUrl = "https://budget-track-beta.web.app";
+              break;
+            default:
+              throw new Error("Plataforma no soportada. Usa 'mobile' o 'web'.");
+          }
+          return baseUrl;
+        }
+
+        /**
+         * Construye la URL final codificando los parámetros automáticamente.
+         * @private
+         */
+        #buildUrl(endpoint, params = {}, platform) {
+          const baseURL = platform ? this.getBaseURL(platform) : this.baseUrl;
+
+          const url = new URL(`${baseURL}${endpoint}`);
 
           for (const [key, value] of Object.entries(params)) {
             if (value !== undefined && value !== null && value !== "") {
@@ -333,10 +364,10 @@
          * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
          * @param {boolean} withUI - Si es true, usa /addTransactionRoute
          */
-        addTransaction(data, withUI = false) {
+        addTransaction(data, withUI = false, plataforma) {
           const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
           this.verify(data, this.transactionSchema);
-          return this.#buildUrl(endpoint, data);
+          return this.#buildUrl(endpoint, data, plataforma);
         }
 
         /**
@@ -349,9 +380,9 @@
           return this.#buildUrl(endpoint, { JSON: { transactions } });
         }
 
-        addTransfer(data) {
+        addTransfer(data, plataforma) {
           this.verify(data, this.transferSchema);
-          return this.#buildUrl("/addTransferRoute", data);
+          return this.#buildUrl("/addTransferRoute", data, plataforma);
         }
 
         /**
@@ -428,17 +459,70 @@
         }
 
         obtenerNombreWallet(texto) {
-          if (!texto) return "";
-          // Busca una palabra (letras) justo ANTES o justo DESPUÉS de "prestamo" o "prestamos"
-          texto = texto.toLowerCase();
-          const palabrasTexto = texto.toLowerCase().split(/\s+/);
+          if (!texto) return [];
 
-          const encontrada = palabrasTexto.find((palabra) =>
-            this.config.wallet.some((name) => name.toLowerCase() === palabra),
+          const palabrasTexto = texto.toLowerCase().split(/\s+/);
+          // Ignorar conectores para evitar falsos positivos con cuentas cortas
+          const conectores = [
+            "de",
+            "a",
+            "en",
+            "el",
+            "la",
+            "para",
+            "por",
+            "un",
+            "pago",
+          ];
+
+          let coincidencias = [];
+
+          this.config.wallet.forEach((wallet) => {
+            const palabrasWallet = wallet.toLowerCase().split(/\s+/);
+
+            // Busca la posición en el texto (ej: "suel" es prefijo de "sueldo")
+            const indexMatch = palabrasTexto.findIndex((pt) => {
+              if (conectores.includes(pt)) return false;
+              // Si la palabra tiene 3+ letras, permite autocompletado ("amer" -> "american").
+              // Si es menor (ej. "Io"), exige que sea exacta.
+              return palabrasWallet.some((pw) =>
+                pt.length >= 3 ? pw.startsWith(pt) : pw === pt,
+              );
+            });
+
+            if (indexMatch !== -1) {
+              coincidencias.push({
+                wallet,
+                index: indexMatch,
+                length: wallet.length,
+              });
+            }
+          });
+
+          // 1. Ordenar por aparición en el texto (para From/To)
+          // 2. Si coinciden en posición, priorizar el nombre más largo
+          coincidencias.sort(
+            (a, b) => a.index - b.index || b.length - a.length,
           );
-          return this.config.wallet.find(
-            (name) => name.toLowerCase() === encontrada,
-          );
+
+          let walletsFiltradas = [];
+          coincidencias.forEach((c) => {
+            // Evita agregar sub-nombres (ej. omite "Interbank" si ya agregó "Sueldo Interbank")
+            if (!walletsFiltradas.some((w) => w.includes(c.wallet))) {
+              walletsFiltradas.push(c.wallet);
+            }
+          });
+
+          if (walletsFiltradas.length > 1) {
+            return [
+              { walletFrom: walletsFiltradas[0] },
+              { walletTo: walletsFiltradas[1] },
+            ];
+          }
+
+          return walletsFiltradas.length
+            ? [{ wallet: walletsFiltradas[0] }]
+            : [];
         }
 
         obtenerMonto(texto) {
@@ -489,95 +573,257 @@
           const mm = String(ahora.getMinutes()).padStart(2, "0");
 
           return {
-            value: `${dia}/${mes}/${anio} ${hh}:${mm}`,
-            encontrado: match,
+            dateCreated: `${dia}/${mes}/${anio} ${hh}:${mm}`,
+            fechaEncontrada: match,
           };
         }
 
-        corregirToFormatTransaction(texto, data) {
-          const fecha = this.obtenerFecha(texto);
-          // si indica "pague" el monto se hace negativo, primero monto, si loan prestamo [nombre],
-          let transaction = {
-            amount: data?.amount || this.obtenerMonto(texto),
-            category: data?.category || "",
-            subcategory: data?.subcategory || this.obtenerSubCategoria(texto),
-            wallet: data?.wallet || this.obtenerNombreWallet(texto),
-            budget: data?.budget || "",
-            goal: data?.goal || "",
-            loan: data?.loan || this.obtenerNombrePrestamo(texto),
-            objective: data?.objective || "",
-            note: data?.note || texto || "",
-            dateCreated: data?.dateCreated || fecha.value,
+        async convertToFormatIA(texto) {
+          console.log("Texto a procesar:", texto);
+          this.clientIA = new GoogleGenAI({ apiKey: YOUR_API_KEY });
+          const recipeJsonSchema = {
+            type: "object",
+            properties: {
+              wallet: {
+                type: "string",
+                description:
+                  "The name of the wallet or account used for the transaction.",
+              },
+              amount: {
+                type: "integer",
+                description:
+                  "Amount of the transaction in the currency unit, can be positive or negative.",
+              },
+              budget: {
+                type: "string",
+                description:
+                  "The budget category for the transaction, if applicable.",
+              },
+              goal: {
+                type: "string",
+                description:
+                  "The goal associated with the transaction, if applicable.",
+              },
+              loan: {
+                type: "string",
+                description:
+                  "The name of the loan associated with the transaction, if applicable.",
+              },
+              objective: {
+                type: "string",
+                description:
+                  "The objective or purpose of the transaction, if applicable.",
+              },
+              dateCreated: {
+                type: "string",
+                description:
+                  "The date and time when the transaction was created, in ISO 8601 format.",
+              },
+              title: {
+                type: "string",
+                description: "A brief title or description of the transaction.",
+              },
+              note: {
+                type: "string",
+                description:
+                  "Additional notes or comments about the transaction.",
+              },
+            },
+            required: ["amount", "title", "dateCreated"],
+            additionalProperties: false,
           };
-          const variables = [
-            transaction.amount,
-            transaction.category,
-            transaction.subcategory,
-            transaction.wallet,
-            fecha.encontrado,
+          this.recipeSchemaIA = z.fromJSONSchema(recipeJsonSchema);
+          const interaction = await this.clientIA.interactions.create({
+            model: "gemini-3.5-flash",
+            input: texto,
+            system_instruction:
+              "Extrae la información de la transacción del texto y devuelva un JSON con los campos: amount, title, category, subcategory, wallet, budget, goal, loan, objective, note, dateCreated.",
+          });
+          console.log(interaction.output_text);
+          return JSON.parse(interaction.output_text);
+        }
+
+        corregirToFormat(texto, data, typeRequest) {
+          // si indica "pague" el monto se hace negativo, primero monto, si loan prestamo [nombre],
+          // monto, wallet from, wallet to, fecha,
+          const prevFormat = {
+            ...Object.assign({}, ...this.obtenerNombreWallet(texto)),
+            ...this.obtenerFecha(texto),
+          };
+          let formatoJson = {};
+          if (prevFormat.walletTo) {
+            formatoJson = {
+              ...prevFormat,
+              amountFrom: data?.amountFrom || this.obtenerMonto(texto),
+            };
+          } else {
+            formatoJson = {
+              ...prevFormat,
+              category: data?.category || "",
+              subcategory: data?.subcategory || this.obtenerSubCategoria(texto),
+              budget: data?.budget || "",
+              goal: data?.goal || "",
+              loan: data?.loan || this.obtenerNombrePrestamo(texto),
+              objective: data?.objective || "",
+              note: data?.note || texto || "",
+              amount: data?.amount || this.obtenerMonto(texto),
+            };
+          }
+
+          const quitarTexto = [
+            formatoJson?.amount,
+            formatoJson?.category,
+            formatoJson?.subcategory,
+            formatoJson?.wallet,
+            formatoJson?.walletFrom,
+            formatoJson?.walletTo,
+            formatoJson?.fechaEncontrada,
+            formatoJson?.amountFrom,
           ]
             .flat(Infinity)
             .filter((v) => v) // Elimina null, undefined y ""
             .map((v) => String(v).trim()) // Convierte a texto y quita espacios
             .filter((v) => v.length > 0);
-          console.log(variables);
 
-          const patron = variables.join("|");
+          const patron = quitarTexto.join("|");
           const regex = new RegExp(patron, "gi");
-          transaction.title =
+          formatoJson.title =
             data?.title || texto.replace(regex, "").replace(/\s+/g, " ").trim();
 
-          return transaction;
+          return formatoJson;
+        }
+
+        autoGenerateURL(texto, data, addFuctionName = "", plataforma) {
+          const jsonFormat = this.corregirToFormat(texto, data);
+          let cashewURL = "";
+          switch (addFuctionName) {
+            case "transfer":
+              cashewURL = this.addTransfer(jsonFormat, plataforma);
+              break;
+            case "transaction":
+              cashewURL = this.addTransaction(jsonFormat, false, plataforma);
+              break;
+          }
+
+          if (jsonFormat.walletTo) {
+            cashewURL = this.addTransfer(jsonFormat, plataforma);
+          } else {
+            cashewURL = this.addTransaction(jsonFormat, false, plataforma);
+          }
+          return cashewURL;
         }
       }
-     
+
+      const cashew = new CashewAppLinks();
       const selectorPlataforma = document.getElementById("selectorPlataforma");
       const selectorTipo = document.getElementById("selectorTipo");
       const searchInput = document.getElementById("search");
       const confirmBtn = document.getElementById("confirmBtn");
       const nextBtn = document.getElementById("nextBtn");
       const resultEl = document.getElementById("result");
+      const cajaSugerencias = document.getElementById("sugerencias");
+      const CASHEWSUGERENCIAS = [
+        ...cashew.config.wallet,
+        ...cashew.config.loan,
+        ...cashew.config.subcategory,
+      ];
 
       function updateResult() {
         const typeDispotivo = selectorPlataforma.value;
-        const cashew = new CashewAppLinks(typeDispotivo);
         const nameRequest = selectorTipo.value;
-        console.log(nameRequest)
         const query = searchInput.value.trim();
+        let base = "";
         if (!query) {
           resultEl.className = "result empty";
           resultEl.innerHTML = "Please enter a search query";
           return;
         }
-        var base = ""
-        switch(nameRequest){
-            case "addTransaction":
-                const transactionFormatAddTransaction = cashew.corregirToFormatTransaction(query);
-                const baseAddTransaction = cashew.addTransaction(transactionFormatAddTransaction);
-                base = baseAddTransaction;
-                break;
+        switch (nameRequest) {
+          case "auto":
+            base = cashew.autoGenerateURL(
+              query,
+              null,
+              null,
+              selectorPlataforma.value,
+            );
+            break;
 
-            case "correctBalance":
-                const transactionFormatCorrectBalance = cashew.corregirToFormatTransaction(query);
-                const baseCorrectBalance = cashew.correctBalance(transactionFormatCorrectBalance);
-                base = baseCorrectBalance;
-                break;
-            case "addTransfer":
-                const transactionFormatAddTransfer = cashew.corregirToFormatTransaction(query);
-                const baseAddTransfer = cashew.addTransfer(transactionFormatAddTransfer);
-                base = baseAddTransfer;
-                break;
-            case "addWithIntelligence":
-                const baseAddWithIntelligence = cashew.addWithIntelligence(query);
-                base = baseAddWithIntelligence;
-                break;   
+          case "addTransaction":
+            base = cashew.autoGenerateURL(
+              query,
+              null,
+              "transaction",
+              selectorPlataforma.value,
+            );
+            break;
+
+          case "correctBalance":
+            const transactionFormatCorrectBalance =
+              cashew.corregirToFormatTransaction(query);
+            const baseCorrectBalance = cashew.correctBalance(
+              transactionFormatCorrectBalance,
+            );
+            base = baseCorrectBalance;
+            break;
+          case "addTransfer":
+            base = cashew.autoGenerateURL(
+              query,
+              null,
+              "transfer",
+              selectorPlataforma.value,
+            );
+            break;
+          case "addWithIntelligence":
+            const baseAddWithIntelligence = cashew.addWithIntelligence(query);
+            base = baseAddWithIntelligence;
+            break;
         }
-
 
         const url = base;
         resultEl.className = "result";
         resultEl.innerHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
       }
+
+      searchInput.addEventListener("input", () => {
+        const palabras = searchInput.value.split(/\s+/);
+        const ultimaPalabra = palabras[palabras.length - 1].toLowerCase();
+
+        cajaSugerencias.innerHTML = "";
+
+        if (ultimaPalabra.length >= 2) {
+          const coincidencias = CASHEWSUGERENCIAS.filter((acc) =>
+            acc.toLowerCase().includes(ultimaPalabra),
+          );
+
+          if (coincidencias.length > 0) {
+            cajaSugerencias.style.display = "block";
+
+            coincidencias.forEach((acc, index) => {
+              const opcion = document.createElement("div");
+              opcion.textContent = acc;
+              opcion.className = "sugerencia-item";
+
+              // Resalta la primera opción de azul para indicar qué completará el Tab
+              if (index === 0) opcion.classList.add("activa");
+
+              opcion.onclick = () => {
+                palabras[palabras.length - 1] = acc;
+                searchInput.value = palabras.join(" ") + " ";
+                cajaSugerencias.style.display = "none";
+                searchInput.focus();
+              };
+
+              cajaSugerencias.appendChild(opcion);
+            });
+            return;
+          }
+        }
+        cajaSugerencias.style.display = "none";
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target !== searchInput) cajaSugerencias.style.display = "none";
+      });
 
       confirmBtn.addEventListener("click", updateResult);
 
@@ -592,7 +838,27 @@
       });
 
       searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") updateResult();
+        // Si presiona Tab y la caja de sugerencias está visible
+        if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
+          e.preventDefault(); // Evita que salte al siguiente campo
+
+          const primeraOpcion = cajaSugerencias.firstChild;
+          if (primeraOpcion) {
+            primeraOpcion.click(); // Ejecuta la misma lógica del clic
+          }
+        }
+      });
+
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
+          e.preventDefault();
+          const primeraOpcion = cajaSugerencias.firstChild;
+          if (primeraOpcion) primeraOpcion.click();
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target !== searchInput) cajaSugerencias.style.display = "none";
       });
     </script>
   </body>
