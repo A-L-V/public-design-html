@@ -1,865 +1,1010 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cashew Generator URL</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      body {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #0d1117;
-        font-family:
-          system-ui,
-          -apple-system,
-          sans-serif;
-        padding: 1rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cashew Generator URL</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0d1117;
+      font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
+      padding: 1rem;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      color: #e6edf3;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    label {
+      color: #8b949e;
+      font-size: 0.85rem;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #0d1117;
+      color: #e6edf3;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #58a6ff;
+    }
+
+    select {
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+    }
+
+    input::placeholder {
+      color: #484f58;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .btn-next {
+      background: #21262d;
+      color: #e6edf3;
+      border: 1px solid #30363d;
+    }
+
+    .btn-confirm {
+      background: #238636;
+      color: #fff;
+    }
+
+    .result {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      min-height: 48px;
+      word-break: break-all;
+    }
+
+    .result a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    .result a:hover {
+      text-decoration: underline;
+    }
+
+    .result.empty {
+      color: #484f58;
+      display: flex;
+      align-items: center;
+    }
+
+    @media (max-width: 500px) {
       .card {
-        background: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 12px;
-        padding: 2rem;
-        width: 100%;
-        max-width: 480px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-      }
-
-      h1 {
-        color: #e6edf3;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        text-align: center;
-      }
-
-      label {
-        color: #8b949e;
-        font-size: 0.85rem;
-        display: block;
-        margin-bottom: 0.35rem;
-      }
-
-      input,
-      select {
-        width: 100%;
-        padding: 0.7rem 0.85rem;
-        border: 1px solid #30363d;
-        border-radius: 8px;
-        background: #0d1117;
-        color: #e6edf3;
-        font-size: 0.95rem;
-        outline: none;
-        transition: border 0.2s;
-      }
-
-      input:focus,
-      select:focus {
-        border-color: #58a6ff;
-      }
-
-      select {
-        cursor: pointer;
-        -webkit-appearance: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.85rem center;
-      }
-
-      input::placeholder {
-        color: #484f58;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
+        padding: 1.25rem;
       }
 
       .btn-row {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 0.25rem;
+        flex-direction: column;
       }
+    }
 
-      button {
-        flex: 1;
-        padding: 0.7rem;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: opacity 0.2s;
-      }
+    #sugerencias {
+      position: absolute;
+      background: #121212;
+      border: 1px solid #333;
+      display: none;
+      z-index: 10;
+      overflow-x: auto;
+      white-space: nowrap;
+      /* Evita que salte de línea */
+      padding: 5px;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
 
-      button:hover {
-        opacity: 0.85;
-      }
+    /* Cada sugerencia al costado de la otra */
+    .sugerencia-item {
+      display: inline-block;
+      color: #ccc;
+      /* Texto por defecto */
+      background: #2a2a2a;
+      padding: 6px 12px;
+      margin-right: 6px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: sans-serif;
+      font-size: 14px;
+    }
 
-      .btn-next {
-        background: #21262d;
-        color: #e6edf3;
-        border: 1px solid #30363d;
-      }
+    /* Efecto al pasar el mouse o ser la primera opción (para el Tab) */
+    .sugerencia-item:hover,
+    .sugerencia-item.activa {
+      color: #007bff;
+      /* Texto azul */
+      background: #000;
+    }
 
-      .btn-confirm {
-        background: #238636;
-        color: #fff;
-      }
+    /* Estilos del botón estilo "Push to talk" */
+    .mic-button {
+      background-color: #333;
+      border: none;
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
-      .result {
-        margin-top: 1.25rem;
-        padding: 0.85rem 1rem;
-        border-radius: 8px;
-        background: #0d1117;
-        border: 1px solid #30363d;
-        min-height: 48px;
-        word-break: break-all;
-      }
+      /* Evita que el celular haga zoom o seleccione texto al mantener presionado */
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-      .result a {
-        color: #58a6ff;
-        text-decoration: none;
-      }
+    /* Icono SVG del micrófono */
+    .mic-button svg {
+      width: 35px;
+      height: 35px;
+      fill: #aaaaaa;
+      transition: fill 0.2s;
+    }
 
-      .result a:hover {
-        text-decoration: underline;
-      }
+    /* Estado ACTIVO (Cuando se mantiene presionado) */
+    .mic-button.recording {
+      background-color: #ff4757;
+      transform: scale(0.92);
+      /* Se hunde un poco */
+      box-shadow: 0 0 25px rgba(255, 71, 87, 0.6);
+      /* Resplandor rojo */
+    }
 
-      .result.empty {
-        color: #484f58;
-        display: flex;
-        align-items: center;
-      }
+    .mic-button.recording svg {
+      fill: #ffffff;
+    }
 
-      @media (max-width: 500px) {
-        .card {
-          padding: 1.25rem;
-        }
+    .status-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+      height: 20px;
+    }
 
-        .btn-row {
-          flex-direction: column;
-        }
-      }
+    /* Área de texto */
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.3s;
+    }
 
-      #sugerencias {
-        position: absolute;
-        background: #121212;
-        border: 1px solid #333;
-        display: none;
-        z-index: 10;
-        overflow-x: auto;
-        white-space: nowrap; /* Evita que salte de línea */
-        padding: 5px;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
-      /* Cada sugerencia al costado de la otra */
-      .sugerencia-item {
-        display: inline-block;
-        color: #ccc; /* Texto por defecto */
-        background: #2a2a2a;
-        padding: 6px 12px;
-        margin-right: 6px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-family: sans-serif;
-        font-size: 14px;
-      }
-      /* Efecto al pasar el mouse o ser la primera opción (para el Tab) */
-      .sugerencia-item:hover,
-      .sugerencia-item.activa {
-        color: #007bff; /* Texto azul */
-        background: #000;
-      }
-    </style>
-  </head>
+    textarea:focus {
+      border-color: #666;
+    }
 
-  <body>
-    <div class="card">
-      <h1>Cashew Generator URL</h1>
-      <div class="form-group">
-        <label for="selector">Plataforma</label>
-        <select id="selectorPlataforma">
-          <option value="web">web</option>
-          <option value="mobile">mobile</option>
-          <option selected="selected" value="betaWeb">betaWeb</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="selector">Tipo</label>
-        <select id="selectorTipo">
-          <option selected="selected" value="auto">auto</option>
-          <option value="correctBalance">correctBalance</option>
-          <option value="addTransfer">addTransfer</option>
-          <option value="addTransaction">addTransaction</option>
-          <option value="addWithIntelligence">addWithIntelligence</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="search">Query</label>
-        <input
-          type="text"
-          id="search"
-          placeholder="Gaste 5 sol en restaurante el 3 jun"
-          list="lista-dinamica"
-        />
-        <div id="sugerencias"></div>
-      </div>
-      <div class="btn-row">
-        <button class="btn-next" id="nextBtn">Next</button>
-        <button class="btn-confirm" id="confirmBtn">Confirm</button>
-      </div>
-      <div class="result empty" id="result">Waiting for search...</div>
+    textarea::placeholder {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Cashew Generator URL</h1>
+    <div class="form-group">
+      <label for="selector">Plataforma</label>
+      <select id="selectorPlataforma">
+        <option value="web">web</option>
+        <option value="mobile">mobile</option>
+        <option selected="selected" value="betaWeb">betaWeb</option>
+      </select>
     </div>
-    <script type="module">
-      import { z } from "https://esm.sh/zod";
+    <div class="form-group">
+      <label for="selector">Tipo</label>
+      <select id="selectorTipo">
+        <option selected="selected" value="auto">auto</option>
+        <option value="correctBalance">correctBalance</option>
+        <option value="addTransfer">addTransfer</option>
+        <option value="addTransaction">addTransaction</option>
+        <option value="addWithIntelligence">addWithIntelligence</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="search">Query</label>
+      <input type="text" id="search" placeholder="Gaste 5 sol en restaurante el 3 jun" list="lista-dinamica" />
+      <div id="sugerencias"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-next" id="nextBtn">Next</button>
+      <button class="btn-confirm" id="confirmBtn">Confirm</button>
+    </div>
 
-      class CashewAppLinks {
-        /**
-         * @param {'mobile'|'web'} platform - Plataforma destino
-         */
-        constructor(platform = "mobile") {
-          this.baseUrl = this.getBaseURL(platform);
-          const configFromAPP = {
-            accounts: [
-              "Efectivo",
-              "Sueldo Interbank",
-              "Yape BCP",
-              "Interbank",
-              "American Express",
-              "Io",
+    <div>
+
+      <button id="mic-btn" class="mic-button" aria-label="Mantén presionado para hablar">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+          <path
+            d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+        </svg>
+      </button>
+
+    </div>
+    <div class="result empty" id="result">Waiting for search...</div>
+  </div>
+  <script type="module">
+    import { z } from "https://esm.sh/zod";
+
+    class CashewAppLinks {
+      /**
+       * @param {'mobile'|'web'} platform - Plataforma destino
+       */
+      constructor(platform = "mobile") {
+        this.baseUrl = this.getBaseURL(platform);
+        const configFromAPP = {
+          accounts: [
+            "Efectivo",
+            "Sueldo Interbank",
+            "Yape BCP",
+            "Interbank",
+            "American Express",
+            "Io",
+          ],
+          categories: {
+            "Corrección de equilibrio": ["Tardanza"],
+            Comidas: ["Delivery", "Restaurante", "Tia Veneno"],
+            Travel: [],
+            Ingreso: ["Regalo", "Freelancer", "Taxi service"],
+            Comestibles: ["Mercado", "Snacks"],
+            Compras: [
+              "Cosplay",
+              "Electrodomésticos",
+              "Ropa",
+              "Aseo",
+              "Muebles",
             ],
-            categories: {
-              "Corrección de equilibrio": ["Tardanza"],
-              Comidas: ["Delivery", "Restaurante", "Tia Veneno"],
-              Travel: [],
-              Ingreso: ["Regalo", "Freelancer", "Taxi service"],
-              Comestibles: ["Mercado", "Snacks"],
-              Compras: [
-                "Cosplay",
-                "Electrodomésticos",
-                "Ropa",
-                "Aseo",
-                "Muebles",
-              ],
-              Transporte: ["GLP", "Delivery", "Gasolina", "Micro", "Taxi"],
-              Entretenimiento: ["Trago", "Fiesta"],
-              Factura: ["Carro", "Internet"],
-              Regalo: [],
-              Trabajo: [],
-              Otros: ["Pagos tarjeta", "Devolucion", "Personas"],
-            },
-            addableBudgets: [],
-            goals: [],
-            longTermLoans: ["Aldair", "Ricardo", "Nelly", "Elisa", "Los Tios"],
-          };
+            Transporte: ["GLP", "Delivery", "Gasolina", "Micro", "Taxi"],
+            Entretenimiento: ["Trago", "Fiesta"],
+            Factura: ["Carro", "Internet"],
+            Regalo: [],
+            Trabajo: [],
+            Otros: ["Pagos tarjeta", "Devolucion", "Personas"],
+          },
+          addableBudgets: [],
+          goals: [],
+          longTermLoans: ["Aldair", "Ricardo", "Nelly", "Elisa", "Los Tios"],
+        };
 
-          this.config = {
-            wallet: configFromAPP.accounts,
-            category: Object.keys(configFromAPP.categories),
-            subcategory: Object.values(configFromAPP.categories).flat(),
-            budget: configFromAPP.addableBudgets,
-            goal: configFromAPP.goals,
-            loan: configFromAPP.longTermLoans,
-          };
-          this.transactionSchema = z.object({
-            amount: z.number({ required_error: "Monto obligatorio" }),
-            title: z.string().min(1, "Título obligatorio"),
-            category: z.enum(this.config.category),
-            subcategory: z
-              .enum(this.config.subcategory)
-              .optional()
-              .or(z.literal("")),
-            wallet: z.enum(this.config.wallet),
-            budget: z.enum(this.config.budget).optional().or(z.literal("")),
-            goal: z.enum(this.config.goal).optional().or(z.literal("")),
-            loan: z.enum(this.config.loan).optional().or(z.literal("")),
-            objective: z.string().optional().or(z.literal("")),
-            note: z.string().optional().or(z.literal("")),
-            dateCreated: z.string().datetime().optional().or(z.literal("")),
+        this.config = {
+          wallet: configFromAPP.accounts,
+          category: Object.keys(configFromAPP.categories),
+          subcategory: Object.values(configFromAPP.categories).flat(),
+          budget: configFromAPP.addableBudgets,
+          goal: configFromAPP.goals,
+          loan: configFromAPP.longTermLoans,
+        };
+        this.transactionSchema = z.object({
+          amount: z.number({ required_error: "Monto obligatorio" }),
+          title: z.string().min(1, "Título obligatorio"),
+          category: z.enum(this.config.category),
+          subcategory: z
+            .enum(this.config.subcategory)
+            .optional()
+            .or(z.literal("")),
+          wallet: z.enum(this.config.wallet),
+          budget: z.enum(this.config.budget).optional().or(z.literal("")),
+          goal: z.enum(this.config.goal).optional().or(z.literal("")),
+          loan: z.enum(this.config.loan).optional().or(z.literal("")),
+          objective: z.string().optional().or(z.literal("")),
+          note: z.string().optional().or(z.literal("")),
+          dateCreated: z.string().datetime().optional().or(z.literal("")),
+        });
+
+        this.transferSchema = z.object({
+          amountFrom: z.number({ required_error: "Monto obligatorio" }),
+          amountTo: z.number(),
+          title: z.string().min(1, "Título obligatorio"),
+          walletFrom: z.enum(this.config.wallet),
+          walletTo: z.enum(this.config.wallet),
+          dateCreated: z.string().datetime().optional().or(z.literal("")),
+        });
+      }
+
+      /**
+       * Construye la URL final codificando los parámetros automáticamente.
+       * @private
+       */
+      getBaseURL(platform) {
+        let baseUrl = "";
+        switch (platform) {
+          case "mobile":
+            baseUrl = "https://cashewapp.web.app";
+            break;
+          case "web":
+            baseUrl = "https://budget-track.web.app";
+            break;
+          case "betaWeb":
+            baseUrl = "https://budget-track-beta.web.app";
+            break;
+          default:
+            throw new Error("Plataforma no soportada. Usa 'mobile' o 'web'.");
+        }
+        return baseUrl;
+      }
+
+      /**
+       * Construye la URL final codificando los parámetros automáticamente.
+       * @private
+       */
+      #buildUrl(endpoint, params = {}, platform) {
+        const baseURL = platform ? this.getBaseURL(platform) : this.baseUrl;
+
+        const url = new URL(`${baseURL}${endpoint}`);
+
+        for (const [key, value] of Object.entries(params)) {
+          if (value !== undefined && value !== null && value !== "") {
+            const parsedValue =
+              typeof value === "object" ? JSON.stringify(value) : value;
+            url.searchParams.append(key, parsedValue);
+          }
+        }
+
+        return url.toString();
+      }
+
+      /**
+       * Validar futura entrada de transacción contra la configuración predefinida.
+       * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
+       */
+      verify(data, schemaType = this.transactionSchema) {
+        const result = schemaType.safeParse(data);
+        if (!result.success) {
+          // Iteramos sobre los errores estructurados
+          result.error.issues.forEach((issue) => {
+            const campo = issue.path.join("."); // Obtiene el nombre de la etiqueta
+            const mensaje = issue.message; // Obtiene tu mensaje personalizado
+
+            console.log(`${campo}: ${mensaje}`);
+          });
+        }
+        //if (!result.success) throw new Error("Datos de transacción inválidos. Revisa la consola.");
+        return result;
+      }
+
+      /**
+       * Genera enlace para una o múltiples transacciones.
+       * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
+       * @param {boolean} withUI - Si es true, usa /addTransactionRoute
+       */
+      addTransaction(data, withUI = false, plataforma) {
+        const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
+        this.verify(data, this.transactionSchema);
+        return this.#buildUrl(endpoint, data, plataforma);
+      }
+
+      /**
+       * Genera enlace para transacciones en lote mediante JSON.
+       * @param {Array<Object>} transactions - Lista de transacciones
+       * @param {boolean} withUI
+       */
+      addMultipleTransactions(transactions, withUI = false) {
+        const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
+        return this.#buildUrl(endpoint, { JSON: { transactions } });
+      }
+
+      addTransfer(data, plataforma) {
+        this.verify(data, this.transferSchema);
+        return this.#buildUrl("/addTransferRoute", data, plataforma);
+      }
+
+      /**
+       * Genera enlace para corregir el balance de una cuenta.
+       */
+      correctBalance(data, withUI = false) {
+        const endpoint = withUI
+          ? "/correctTotalBalanceRoute"
+          : "/correctTotalBalance";
+        return this.#buildUrl(endpoint, data);
+      }
+
+      /**
+       * Genera enlace para añadir transacciones mediante IA.
+       */
+      addWithIntelligence(prompt, withUI = false) {
+        const endpoint = withUI
+          ? "/addTransactionRoute/intelligence"
+          : "/addTransaction/intelligence";
+        return this.#buildUrl(endpoint, { prompt });
+      }
+
+      /**
+       * Abre páginas específicas de la app (ej. searchTransactionsPage)
+       */
+      openPage(pageName, query = null) {
+        const params = query ? { query } : {};
+        return this.#buildUrl(`/${pageName}`, params);
+      }
+
+      parsearFecha(str) {
+        if (!str) return undefined;
+        if (str instanceof Date) return str; // Por si ExcelJS ya lo lee como objeto Date
+
+        const [fecha, hora] = str.toString().split(" ");
+        const [dia, mes, anio] = fecha.split("/");
+        const [hh, mm, ss] = hora ? hora.split(":") : [0, 0, 0];
+
+        // El mes va de 0 a 11 en JavaScript, por eso se resta 1
+        return `$dia/$mes/$anio  $hh $mm`;
+      }
+
+      obtenerNombrePrestamo(texto) {
+        if (!texto) return "";
+        // Busca una palabra (letras) justo ANTES o justo DESPUÉS de "prestamo" o "prestamos"
+        texto = texto.toLowerCase();
+        const searchPrestamo =
+          texto.includes("prestamo") || texto.includes("prestamos");
+        if (!searchPrestamo) return "";
+        const palabrasTexto = texto.toLowerCase().split(/\s+/);
+
+        const encontrada = palabrasTexto.find((palabra) =>
+          this.config.loan.some((name) => name.toLowerCase() === palabra),
+        );
+        return this.config.loan.find(
+          (loan) => loan.toLowerCase() === encontrada,
+        );
+      }
+
+      obtenerSubCategoria(texto) {
+        if (!texto) return "";
+        const palabrasTexto = texto.toLowerCase().split(/\s+/);
+        const encontrada = palabrasTexto.find(
+          (palabra) =>
+            this.config.subcategory.some(
+              (sub) => sub.toLowerCase() === palabra,
+            ),
+          //|| this.config.category.some(cat => cat.toLowerCase() === palabra)
+        );
+        if (!encontrada) return null;
+        return this.config.subcategory.find(
+          (sub) => sub.toLowerCase() === encontrada,
+        );
+      }
+
+      obtenerNombreWallet(texto) {
+        if (!texto) return [];
+
+        const palabrasTexto = texto.toLowerCase().split(/\s+/);
+        // Ignorar conectores para evitar falsos positivos con cuentas cortas
+        const conectores = [
+          "de",
+          "a",
+          "en",
+          "el",
+          "la",
+          "para",
+          "por",
+          "un",
+          "pago",
+        ];
+
+        let coincidencias = [];
+
+        this.config.wallet.forEach((wallet) => {
+          const palabrasWallet = wallet.toLowerCase().split(/\s+/);
+
+          // Busca la posición en el texto (ej: "suel" es prefijo de "sueldo")
+          const indexMatch = palabrasTexto.findIndex((pt) => {
+            if (conectores.includes(pt)) return false;
+            // Si la palabra tiene 3+ letras, permite autocompletado ("amer" -> "american").
+            // Si es menor (ej. "Io"), exige que sea exacta.
+            return palabrasWallet.some((pw) =>
+              pt.length >= 3 ? pw.startsWith(pt) : pw === pt,
+            );
           });
 
-          this.transferSchema = z.object({
-            amountFrom: z.number({ required_error: "Monto obligatorio" }),
-            amountTo: z.number(),
-            title: z.string().min(1, "Título obligatorio"),
-            walletFrom: z.enum(this.config.wallet),
-            walletTo: z.enum(this.config.wallet),
-            dateCreated: z.string().datetime().optional().or(z.literal("")),
-          });
-        }
-
-        /**
-         * Construye la URL final codificando los parámetros automáticamente.
-         * @private
-         */
-        getBaseURL(platform) {
-          let baseUrl = "";
-          switch (platform) {
-            case "mobile":
-              baseUrl = "https://cashewapp.web.app";
-              break;
-            case "web":
-              baseUrl = "https://budget-track.web.app";
-              break;
-            case "betaWeb":
-              baseUrl = "https://budget-track-beta.web.app";
-              break;
-            default:
-              throw new Error("Plataforma no soportada. Usa 'mobile' o 'web'.");
-          }
-          return baseUrl;
-        }
-
-        /**
-         * Construye la URL final codificando los parámetros automáticamente.
-         * @private
-         */
-        #buildUrl(endpoint, params = {}, platform) {
-          const baseURL = platform ? this.getBaseURL(platform) : this.baseUrl;
-
-          const url = new URL(`${baseURL}${endpoint}`);
-
-          for (const [key, value] of Object.entries(params)) {
-            if (value !== undefined && value !== null && value !== "") {
-              const parsedValue =
-                typeof value === "object" ? JSON.stringify(value) : value;
-              url.searchParams.append(key, parsedValue);
-            }
-          }
-
-          return url.toString();
-        }
-
-        /**
-         * Validar futura entrada de transacción contra la configuración predefinida.
-         * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
-         */
-        verify(data, schemaType = this.transactionSchema) {
-          const result = schemaType.safeParse(data);
-          if (!result.success) {
-            // Iteramos sobre los errores estructurados
-            result.error.issues.forEach((issue) => {
-              const campo = issue.path.join("."); // Obtiene el nombre de la etiqueta
-              const mensaje = issue.message; // Obtiene tu mensaje personalizado
-
-              console.log(`${campo}: ${mensaje}`);
+          if (indexMatch !== -1) {
+            coincidencias.push({
+              wallet,
+              index: indexMatch,
+              length: wallet.length,
             });
           }
-          //if (!result.success) throw new Error("Datos de transacción inválidos. Revisa la consola.");
-          return result;
-        }
+        });
 
-        /**
-         * Genera enlace para una o múltiples transacciones.
-         * @param {Object} data - Parámetros de la transacción (amount, category, etc.)
-         * @param {boolean} withUI - Si es true, usa /addTransactionRoute
-         */
-        addTransaction(data, withUI = false, plataforma) {
-          const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
-          this.verify(data, this.transactionSchema);
-          return this.#buildUrl(endpoint, data, plataforma);
-        }
+        // 1. Ordenar por aparición en el texto (para From/To)
+        // 2. Si coinciden en posición, priorizar el nombre más largo
+        coincidencias.sort(
+          (a, b) => a.index - b.index || b.length - a.length,
+        );
 
-        /**
-         * Genera enlace para transacciones en lote mediante JSON.
-         * @param {Array<Object>} transactions - Lista de transacciones
-         * @param {boolean} withUI
-         */
-        addMultipleTransactions(transactions, withUI = false) {
-          const endpoint = withUI ? "/addTransactionRoute" : "/addTransaction";
-          return this.#buildUrl(endpoint, { JSON: { transactions } });
-        }
+        let walletsFiltradas = [];
+        coincidencias.forEach((c) => {
+          // Evita agregar sub-nombres (ej. omite "Interbank" si ya agregó "Sueldo Interbank")
+          if (!walletsFiltradas.some((w) => w.includes(c.wallet))) {
+            walletsFiltradas.push(c.wallet);
+          }
+        });
 
-        addTransfer(data, plataforma) {
-          this.verify(data, this.transferSchema);
-          return this.#buildUrl("/addTransferRoute", data, plataforma);
-        }
-
-        /**
-         * Genera enlace para corregir el balance de una cuenta.
-         */
-        correctBalance(data, withUI = false) {
-          const endpoint = withUI
-            ? "/correctTotalBalanceRoute"
-            : "/correctTotalBalance";
-          return this.#buildUrl(endpoint, data);
-        }
-
-        /**
-         * Genera enlace para añadir transacciones mediante IA.
-         */
-        addWithIntelligence(prompt, withUI = false) {
-          const endpoint = withUI
-            ? "/addTransactionRoute/intelligence"
-            : "/addTransaction/intelligence";
-          return this.#buildUrl(endpoint, { prompt });
-        }
-
-        /**
-         * Abre páginas específicas de la app (ej. searchTransactionsPage)
-         */
-        openPage(pageName, query = null) {
-          const params = query ? { query } : {};
-          return this.#buildUrl(`/${pageName}`, params);
-        }
-
-        parsearFecha(str) {
-          if (!str) return undefined;
-          if (str instanceof Date) return str; // Por si ExcelJS ya lo lee como objeto Date
-
-          const [fecha, hora] = str.toString().split(" ");
-          const [dia, mes, anio] = fecha.split("/");
-          const [hh, mm, ss] = hora ? hora.split(":") : [0, 0, 0];
-
-          // El mes va de 0 a 11 en JavaScript, por eso se resta 1
-          return `$dia/$mes/$anio  $hh $mm`;
-        }
-
-        obtenerNombrePrestamo(texto) {
-          if (!texto) return "";
-          // Busca una palabra (letras) justo ANTES o justo DESPUÉS de "prestamo" o "prestamos"
-          texto = texto.toLowerCase();
-          const searchPrestamo =
-            texto.includes("prestamo") || texto.includes("prestamos");
-          if (!searchPrestamo) return "";
-          const palabrasTexto = texto.toLowerCase().split(/\s+/);
-
-          const encontrada = palabrasTexto.find((palabra) =>
-            this.config.loan.some((name) => name.toLowerCase() === palabra),
-          );
-          return this.config.loan.find(
-            (loan) => loan.toLowerCase() === encontrada,
-          );
-        }
-
-        obtenerSubCategoria(texto) {
-          if (!texto) return "";
-          const palabrasTexto = texto.toLowerCase().split(/\s+/);
-          const encontrada = palabrasTexto.find(
-            (palabra) =>
-              this.config.subcategory.some(
-                (sub) => sub.toLowerCase() === palabra,
-              ),
-            //|| this.config.category.some(cat => cat.toLowerCase() === palabra)
-          );
-          if (!encontrada) return null;
-          return this.config.subcategory.find(
-            (sub) => sub.toLowerCase() === encontrada,
-          );
-        }
-
-        obtenerNombreWallet(texto) {
-          if (!texto) return [];
-
-          const palabrasTexto = texto.toLowerCase().split(/\s+/);
-          // Ignorar conectores para evitar falsos positivos con cuentas cortas
-          const conectores = [
-            "de",
-            "a",
-            "en",
-            "el",
-            "la",
-            "para",
-            "por",
-            "un",
-            "pago",
+        if (walletsFiltradas.length > 1) {
+          return [
+            { walletFrom: walletsFiltradas[0] },
+            { walletTo: walletsFiltradas[1] },
           ];
-
-          let coincidencias = [];
-
-          this.config.wallet.forEach((wallet) => {
-            const palabrasWallet = wallet.toLowerCase().split(/\s+/);
-
-            // Busca la posición en el texto (ej: "suel" es prefijo de "sueldo")
-            const indexMatch = palabrasTexto.findIndex((pt) => {
-              if (conectores.includes(pt)) return false;
-              // Si la palabra tiene 3+ letras, permite autocompletado ("amer" -> "american").
-              // Si es menor (ej. "Io"), exige que sea exacta.
-              return palabrasWallet.some((pw) =>
-                pt.length >= 3 ? pw.startsWith(pt) : pw === pt,
-              );
-            });
-
-            if (indexMatch !== -1) {
-              coincidencias.push({
-                wallet,
-                index: indexMatch,
-                length: wallet.length,
-              });
-            }
-          });
-
-          // 1. Ordenar por aparición en el texto (para From/To)
-          // 2. Si coinciden en posición, priorizar el nombre más largo
-          coincidencias.sort(
-            (a, b) => a.index - b.index || b.length - a.length,
-          );
-
-          let walletsFiltradas = [];
-          coincidencias.forEach((c) => {
-            // Evita agregar sub-nombres (ej. omite "Interbank" si ya agregó "Sueldo Interbank")
-            if (!walletsFiltradas.some((w) => w.includes(c.wallet))) {
-              walletsFiltradas.push(c.wallet);
-            }
-          });
-
-          if (walletsFiltradas.length > 1) {
-            return [
-              { walletFrom: walletsFiltradas[0] },
-              { walletTo: walletsFiltradas[1] },
-            ];
-          }
-
-          return walletsFiltradas.length
-            ? [{ wallet: walletsFiltradas[0] }]
-            : [];
         }
 
-        obtenerMonto(texto) {
-          if (!texto) return null;
-          const match = texto.replace(/\s+/g, "").match(/\d+(?:\.\d+)?/);
-          if (texto.includes("pague")) {
-            // Procesar el texto para obtener el monto específico
-            return match ? -Math.abs(Number(match[0])) : null; // Retorna el monto como negativo
-          } else {
-            return match ? Number(match[0]) : null;
-          }
-        }
+        return walletsFiltradas.length
+          ? [{ wallet: walletsFiltradas[0] }]
+          : [];
+      }
 
-        obtenerFecha(texto) {
-          const regexFecha =
-            /\b(\d{1,2})(?:\s+(?:de\s+)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*|[/-](\d{1,2}))\b/i;
-
-          // exec() garantiza que siempre obtengamos los grupos capturados
-          const match = regexFecha.exec(texto);
-
-          if (!match) return null;
-
-          // Forzamos a String para evitar cualquier error de undefined con padStart
-          const dia = String(match[1]).padStart(2, "0");
-          let mes = match[3] ? String(match[3]).padStart(2, "0") : null;
-
-          if (!mes && match[2]) {
-            const meses = {
-              ene: "01",
-              feb: "02",
-              mar: "03",
-              abr: "04",
-              may: "05",
-              jun: "06",
-              jul: "07",
-              ago: "08",
-              sep: "09",
-              oct: "10",
-              nov: "11",
-              dic: "12",
-            };
-            mes = meses[match[2].toLowerCase()];
-          }
-
-          const ahora = new Date();
-          const anio = ahora.getFullYear();
-          const hh = String(ahora.getHours()).padStart(2, "0");
-          const mm = String(ahora.getMinutes()).padStart(2, "0");
-
-          return {
-            dateCreated: `${dia}/${mes}/${anio} ${hh}:${mm}`,
-            fechaEncontrada: match,
-          };
-        }
-
-        async convertToFormatIA(texto) {
-          console.log("Texto a procesar:", texto);
-          this.clientIA = new GoogleGenAI({ apiKey: YOUR_API_KEY });
-          const recipeJsonSchema = {
-            type: "object",
-            properties: {
-              wallet: {
-                type: "string",
-                description:
-                  "The name of the wallet or account used for the transaction.",
-              },
-              amount: {
-                type: "integer",
-                description:
-                  "Amount of the transaction in the currency unit, can be positive or negative.",
-              },
-              budget: {
-                type: "string",
-                description:
-                  "The budget category for the transaction, if applicable.",
-              },
-              goal: {
-                type: "string",
-                description:
-                  "The goal associated with the transaction, if applicable.",
-              },
-              loan: {
-                type: "string",
-                description:
-                  "The name of the loan associated with the transaction, if applicable.",
-              },
-              objective: {
-                type: "string",
-                description:
-                  "The objective or purpose of the transaction, if applicable.",
-              },
-              dateCreated: {
-                type: "string",
-                description:
-                  "The date and time when the transaction was created, in ISO 8601 format.",
-              },
-              title: {
-                type: "string",
-                description: "A brief title or description of the transaction.",
-              },
-              note: {
-                type: "string",
-                description:
-                  "Additional notes or comments about the transaction.",
-              },
-            },
-            required: ["amount", "title", "dateCreated"],
-            additionalProperties: false,
-          };
-          this.recipeSchemaIA = z.fromJSONSchema(recipeJsonSchema);
-          const interaction = await this.clientIA.interactions.create({
-            model: "gemini-3.5-flash",
-            input: texto,
-            system_instruction:
-              "Extrae la información de la transacción del texto y devuelva un JSON con los campos: amount, title, category, subcategory, wallet, budget, goal, loan, objective, note, dateCreated.",
-          });
-          console.log(interaction.output_text);
-          return JSON.parse(interaction.output_text);
-        }
-
-        corregirToFormat(texto, data, typeRequest) {
-          // si indica "pague" el monto se hace negativo, primero monto, si loan prestamo [nombre],
-          // monto, wallet from, wallet to, fecha,
-          const prevFormat = {
-            ...Object.assign({}, ...this.obtenerNombreWallet(texto)),
-            ...this.obtenerFecha(texto),
-          };
-          let formatoJson = {};
-          if (prevFormat.walletTo) {
-            formatoJson = {
-              ...prevFormat,
-              amountFrom: data?.amountFrom || this.obtenerMonto(texto),
-            };
-          } else {
-            formatoJson = {
-              ...prevFormat,
-              category: data?.category || "",
-              subcategory: data?.subcategory || this.obtenerSubCategoria(texto),
-              budget: data?.budget || "",
-              goal: data?.goal || "",
-              loan: data?.loan || this.obtenerNombrePrestamo(texto),
-              objective: data?.objective || "",
-              note: data?.note || texto || "",
-              amount: data?.amount || this.obtenerMonto(texto),
-            };
-          }
-
-          const quitarTexto = [
-            formatoJson?.amount,
-            formatoJson?.category,
-            formatoJson?.subcategory,
-            formatoJson?.wallet,
-            formatoJson?.walletFrom,
-            formatoJson?.walletTo,
-            formatoJson?.fechaEncontrada,
-            formatoJson?.amountFrom,
-          ]
-            .flat(Infinity)
-            .filter((v) => v) // Elimina null, undefined y ""
-            .map((v) => String(v).trim()) // Convierte a texto y quita espacios
-            .filter((v) => v.length > 0);
-
-          const patron = quitarTexto.join("|");
-          const regex = new RegExp(patron, "gi");
-          formatoJson.title =
-            data?.title || texto.replace(regex, "").replace(/\s+/g, " ").trim();
-
-          return formatoJson;
-        }
-
-        autoGenerateURL(texto, data, addFuctionName = "", plataforma) {
-          const jsonFormat = this.corregirToFormat(texto, data);
-          let cashewURL = "";
-          switch (addFuctionName) {
-            case "transfer":
-              cashewURL = this.addTransfer(jsonFormat, plataforma);
-              break;
-            case "transaction":
-              cashewURL = this.addTransaction(jsonFormat, false, plataforma);
-              break;
-          }
-
-          if (jsonFormat.walletTo) {
-            cashewURL = this.addTransfer(jsonFormat, plataforma);
-          } else {
-            cashewURL = this.addTransaction(jsonFormat, false, plataforma);
-          }
-          return cashewURL;
+      obtenerMonto(texto) {
+        if (!texto) return null;
+        const match = texto.replace(/\s+/g, "").match(/\d+(?:\.\d+)?/);
+        if (texto.includes("pague")) {
+          // Procesar el texto para obtener el monto específico
+          return match ? -Math.abs(Number(match[0])) : null; // Retorna el monto como negativo
+        } else {
+          return match ? Number(match[0]) : null;
         }
       }
 
-      const cashew = new CashewAppLinks();
-      const selectorPlataforma = document.getElementById("selectorPlataforma");
-      const selectorTipo = document.getElementById("selectorTipo");
-      const searchInput = document.getElementById("search");
-      const confirmBtn = document.getElementById("confirmBtn");
-      const nextBtn = document.getElementById("nextBtn");
-      const resultEl = document.getElementById("result");
-      const cajaSugerencias = document.getElementById("sugerencias");
-      const CASHEWSUGERENCIAS = [
-        ...cashew.config.wallet,
-        ...cashew.config.loan,
-        ...cashew.config.subcategory,
-      ];
+      obtenerFecha(texto) {
+        const regexFecha =
+          /\b(\d{1,2})(?:\s+(?:de\s+)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*|[/-](\d{1,2}))\b/i;
 
-      function updateResult() {
-        const typeDispotivo = selectorPlataforma.value;
-        const nameRequest = selectorTipo.value;
-        const query = searchInput.value.trim();
-        let base = "";
-        if (!query) {
-          resultEl.className = "result empty";
-          resultEl.innerHTML = "Please enter a search query";
+        // exec() garantiza que siempre obtengamos los grupos capturados
+        const match = regexFecha.exec(texto);
+
+        if (!match) return null;
+
+        // Forzamos a String para evitar cualquier error de undefined con padStart
+        const dia = String(match[1]).padStart(2, "0");
+        let mes = match[3] ? String(match[3]).padStart(2, "0") : null;
+
+        if (!mes && match[2]) {
+          const meses = {
+            ene: "01",
+            feb: "02",
+            mar: "03",
+            abr: "04",
+            may: "05",
+            jun: "06",
+            jul: "07",
+            ago: "08",
+            sep: "09",
+            oct: "10",
+            nov: "11",
+            dic: "12",
+          };
+          mes = meses[match[2].toLowerCase()];
+        }
+
+        const ahora = new Date();
+        const anio = ahora.getFullYear();
+        const hh = String(ahora.getHours()).padStart(2, "0");
+        const mm = String(ahora.getMinutes()).padStart(2, "0");
+
+        return {
+          dateCreated: `${dia}/${mes}/${anio} ${hh}:${mm}`,
+          fechaEncontrada: match,
+        };
+      }
+
+      async convertToFormatIA(texto) {
+        console.log("Texto a procesar:", texto);
+        this.clientIA = new GoogleGenAI({ apiKey: YOUR_API_KEY });
+        const recipeJsonSchema = {
+          type: "object",
+          properties: {
+            wallet: {
+              type: "string",
+              description:
+                "The name of the wallet or account used for the transaction.",
+            },
+            amount: {
+              type: "integer",
+              description:
+                "Amount of the transaction in the currency unit, can be positive or negative.",
+            },
+            budget: {
+              type: "string",
+              description:
+                "The budget category for the transaction, if applicable.",
+            },
+            goal: {
+              type: "string",
+              description:
+                "The goal associated with the transaction, if applicable.",
+            },
+            loan: {
+              type: "string",
+              description:
+                "The name of the loan associated with the transaction, if applicable.",
+            },
+            objective: {
+              type: "string",
+              description:
+                "The objective or purpose of the transaction, if applicable.",
+            },
+            dateCreated: {
+              type: "string",
+              description:
+                "The date and time when the transaction was created, in ISO 8601 format.",
+            },
+            title: {
+              type: "string",
+              description: "A brief title or description of the transaction.",
+            },
+            note: {
+              type: "string",
+              description:
+                "Additional notes or comments about the transaction.",
+            },
+          },
+          required: ["amount", "title", "dateCreated"],
+          additionalProperties: false,
+        };
+        this.recipeSchemaIA = z.fromJSONSchema(recipeJsonSchema);
+        const interaction = await this.clientIA.interactions.create({
+          model: "gemini-3.5-flash",
+          input: texto,
+          system_instruction:
+            "Extrae la información de la transacción del texto y devuelva un JSON con los campos: amount, title, category, subcategory, wallet, budget, goal, loan, objective, note, dateCreated.",
+        });
+        console.log(interaction.output_text);
+        return JSON.parse(interaction.output_text);
+      }
+
+      corregirToFormat(texto, data, typeRequest) {
+        // si indica "pague" el monto se hace negativo, primero monto, si loan prestamo [nombre],
+        // monto, wallet from, wallet to, fecha,
+        const prevFormat = {
+          ...Object.assign({}, ...this.obtenerNombreWallet(texto)),
+          ...this.obtenerFecha(texto),
+        };
+        let formatoJson = {};
+        if (prevFormat.walletTo) {
+          formatoJson = {
+            ...prevFormat,
+            amountFrom: data?.amountFrom || this.obtenerMonto(texto),
+          };
+        } else {
+          formatoJson = {
+            ...prevFormat,
+            category: data?.category || "",
+            subcategory: data?.subcategory || this.obtenerSubCategoria(texto),
+            budget: data?.budget || "",
+            goal: data?.goal || "",
+            loan: data?.loan || this.obtenerNombrePrestamo(texto),
+            objective: data?.objective || "",
+            note: data?.note || texto || "",
+            amount: data?.amount || this.obtenerMonto(texto),
+          };
+        }
+
+        const quitarTexto = [
+          formatoJson?.amount,
+          formatoJson?.category,
+          formatoJson?.subcategory,
+          formatoJson?.wallet,
+          formatoJson?.walletFrom,
+          formatoJson?.walletTo,
+          formatoJson?.fechaEncontrada,
+          formatoJson?.amountFrom,
+        ]
+          .flat(Infinity)
+          .filter((v) => v) // Elimina null, undefined y ""
+          .map((v) => String(v).trim()) // Convierte a texto y quita espacios
+          .filter((v) => v.length > 0);
+
+        const patron = quitarTexto.join("|");
+        const regex = new RegExp(patron, "gi");
+        formatoJson.title =
+          data?.title || texto.replace(regex, "").replace(/\s+/g, " ").trim();
+
+        return formatoJson;
+      }
+
+      autoGenerateURL(texto, data, addFuctionName = "", plataforma) {
+        const jsonFormat = this.corregirToFormat(texto, data);
+        let cashewURL = "";
+        switch (addFuctionName) {
+          case "transfer":
+            cashewURL = this.addTransfer(jsonFormat, plataforma);
+            break;
+          case "transaction":
+            cashewURL = this.addTransaction(jsonFormat, false, plataforma);
+            break;
+        }
+
+        if (jsonFormat.walletTo) {
+          cashewURL = this.addTransfer(jsonFormat, plataforma);
+        } else {
+          cashewURL = this.addTransaction(jsonFormat, false, plataforma);
+        }
+        return cashewURL;
+      }
+    }
+
+    const cashew = new CashewAppLinks();
+    const selectorPlataforma = document.getElementById("selectorPlataforma");
+    const selectorTipo = document.getElementById("selectorTipo");
+    const searchInput = document.getElementById("search");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultEl = document.getElementById("result");
+    const cajaSugerencias = document.getElementById("sugerencias");
+
+
+    const CASHEWSUGERENCIAS = [
+      ...cashew.config.wallet,
+      ...cashew.config.loan,
+      ...cashew.config.subcategory,
+    ];
+
+    function updateResult() {
+      const typeDispotivo = selectorPlataforma.value;
+      const nameRequest = selectorTipo.value;
+      const query = searchInput.value.trim();
+      let base = "";
+      if (!query) {
+        resultEl.className = "result empty";
+        resultEl.innerHTML = "Please enter a search query";
+        return;
+      }
+      switch (nameRequest) {
+        case "auto":
+          base = cashew.autoGenerateURL(
+            query,
+            null,
+            null,
+            selectorPlataforma.value,
+          );
+          break;
+
+        case "addTransaction":
+          base = cashew.autoGenerateURL(
+            query,
+            null,
+            "transaction",
+            selectorPlataforma.value,
+          );
+          break;
+
+        case "correctBalance":
+          const transactionFormatCorrectBalance =
+            cashew.corregirToFormatTransaction(query);
+          const baseCorrectBalance = cashew.correctBalance(
+            transactionFormatCorrectBalance,
+          );
+          base = baseCorrectBalance;
+          break;
+        case "addTransfer":
+          base = cashew.autoGenerateURL(
+            query,
+            null,
+            "transfer",
+            selectorPlataforma.value,
+          );
+          break;
+        case "addWithIntelligence":
+          const baseAddWithIntelligence = cashew.addWithIntelligence(query);
+          base = baseAddWithIntelligence;
+          break;
+      }
+
+      const url = base;
+      resultEl.className = "result";
+      resultEl.innerHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+    }
+
+    searchInput.addEventListener("input", () => {
+      const palabras = searchInput.value.split(/\s+/);
+      const ultimaPalabra = palabras[palabras.length - 1].toLowerCase();
+
+      cajaSugerencias.innerHTML = "";
+
+      if (ultimaPalabra.length >= 2) {
+        const coincidencias = CASHEWSUGERENCIAS.filter((acc) =>
+          acc.toLowerCase().includes(ultimaPalabra),
+        );
+
+        if (coincidencias.length > 0) {
+          cajaSugerencias.style.display = "block";
+
+          coincidencias.forEach((acc, index) => {
+            const opcion = document.createElement("div");
+            opcion.textContent = acc;
+            opcion.className = "sugerencia-item";
+
+            // Resalta la primera opción de azul para indicar qué completará el Tab
+            if (index === 0) opcion.classList.add("activa");
+
+            opcion.onclick = () => {
+              palabras[palabras.length - 1] = acc;
+              searchInput.value = palabras.join(" ") + " ";
+              cajaSugerencias.style.display = "none";
+              searchInput.focus();
+            };
+
+            cajaSugerencias.appendChild(opcion);
+          });
           return;
         }
-        switch (nameRequest) {
-          case "auto":
-            base = cashew.autoGenerateURL(
-              query,
-              null,
-              null,
-              selectorPlataforma.value,
-            );
-            break;
-
-          case "addTransaction":
-            base = cashew.autoGenerateURL(
-              query,
-              null,
-              "transaction",
-              selectorPlataforma.value,
-            );
-            break;
-
-          case "correctBalance":
-            const transactionFormatCorrectBalance =
-              cashew.corregirToFormatTransaction(query);
-            const baseCorrectBalance = cashew.correctBalance(
-              transactionFormatCorrectBalance,
-            );
-            base = baseCorrectBalance;
-            break;
-          case "addTransfer":
-            base = cashew.autoGenerateURL(
-              query,
-              null,
-              "transfer",
-              selectorPlataforma.value,
-            );
-            break;
-          case "addWithIntelligence":
-            const baseAddWithIntelligence = cashew.addWithIntelligence(query);
-            base = baseAddWithIntelligence;
-            break;
-        }
-
-        const url = base;
-        resultEl.className = "result";
-        resultEl.innerHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`;
       }
+      cajaSugerencias.style.display = "none";
+    });
 
-      searchInput.addEventListener("input", () => {
-        const palabras = searchInput.value.split(/\s+/);
-        const ultimaPalabra = palabras[palabras.length - 1].toLowerCase();
+    document.addEventListener("click", (e) => {
+      if (e.target !== searchInput) cajaSugerencias.style.display = "none";
+    });
 
-        cajaSugerencias.innerHTML = "";
+    confirmBtn.addEventListener("click", updateResult);
 
-        if (ultimaPalabra.length >= 2) {
-          const coincidencias = CASHEWSUGERENCIAS.filter((acc) =>
-            acc.toLowerCase().includes(ultimaPalabra),
-          );
+    nextBtn.addEventListener("click", () => {
+      selectorTipo.selectedIndex =
+        (selectorTipo.selectedIndex + 1) % selectorTipo.options.length;
+      if (
+        selectorTipo.selectedIndex === 0 &&
+        selectorTipo.options[0].value === ""
+      )
+        selectorTipo.selectedIndex = 1;
+    });
 
-          if (coincidencias.length > 0) {
-            cajaSugerencias.style.display = "block";
+    searchInput.addEventListener("keydown", (e) => {
+      // Si presiona Tab y la caja de sugerencias está visible
+      if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
+        e.preventDefault(); // Evita que salte al siguiente campo
 
-            coincidencias.forEach((acc, index) => {
-              const opcion = document.createElement("div");
-              opcion.textContent = acc;
-              opcion.className = "sugerencia-item";
-
-              // Resalta la primera opción de azul para indicar qué completará el Tab
-              if (index === 0) opcion.classList.add("activa");
-
-              opcion.onclick = () => {
-                palabras[palabras.length - 1] = acc;
-                searchInput.value = palabras.join(" ") + " ";
-                cajaSugerencias.style.display = "none";
-                searchInput.focus();
-              };
-
-              cajaSugerencias.appendChild(opcion);
-            });
-            return;
-          }
+        const primeraOpcion = cajaSugerencias.firstChild;
+        if (primeraOpcion) {
+          primeraOpcion.click(); // Ejecuta la misma lógica del clic
         }
-        cajaSugerencias.style.display = "none";
-      });
+      }
+    });
 
-      document.addEventListener("click", (e) => {
-        if (e.target !== searchInput) cajaSugerencias.style.display = "none";
-      });
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
+        e.preventDefault();
+        const primeraOpcion = cajaSugerencias.firstChild;
+        if (primeraOpcion) primeraOpcion.click();
+      }
+    });
 
-      confirmBtn.addEventListener("click", updateResult);
+    document.addEventListener("click", (e) => {
+      if (e.target !== searchInput) cajaSugerencias.style.display = "none";
+    });
 
-      nextBtn.addEventListener("click", () => {
-        selectorTipo.selectedIndex =
-          (selectorTipo.selectedIndex + 1) % selectorTipo.options.length;
-        if (
-          selectorTipo.selectedIndex === 0 &&
-          selectorTipo.options[0].value === ""
-        )
-          selectorTipo.selectedIndex = 1;
-      });
 
-      searchInput.addEventListener("keydown", (e) => {
-        // Si presiona Tab y la caja de sugerencias está visible
-        if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
-          e.preventDefault(); // Evita que salte al siguiente campo
+    const micBtn = document.getElementById('mic-btn');
 
-          const primeraOpcion = cajaSugerencias.firstChild;
-          if (primeraOpcion) {
-            primeraOpcion.click(); // Ejecuta la misma lógica del clic
-          }
-        }
-      });
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isRecording = false;
 
-      searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Tab" && cajaSugerencias.style.display === "block") {
-          e.preventDefault();
-          const primeraOpcion = cajaSugerencias.firstChild;
-          if (primeraOpcion) primeraOpcion.click();
-        }
-      });
+    if (!SpeechRecognition) {
+      micBtn.disabled = true;
+    } else {
+      recognition = new SpeechRecognition();
+      recognition.lang = 'es-ES';
+      recognition.continuous = true;
+      recognition.interimResults = true;
 
-      document.addEventListener("click", (e) => {
-        if (e.target !== searchInput) cajaSugerencias.style.display = "none";
-      });
-    </script>
-  </body>
+      recognition.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map(result => result[0].transcript)
+          .join('');
+        searchInput.value = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Error de reconocimiento: ", event.error);
+        stopRecording();
+      };
+    }
+
+    function iniciarGrabacion() {
+      try {
+        recognition.start();
+        isRecording = true;
+        micBtn.classList.add('recording');
+      } catch (err) {
+        console.error("Error al iniciar", err);
+      }
+    }
+
+    function detenerGrabacion() {
+      recognition.stop();
+      isRecording = false;
+      micBtn.classList.remove('recording');
+    }
+
+    micBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!recognition) return;
+
+      if (isRecording) {
+        detenerGrabacion();
+      } else {
+        iniciarGrabacion();
+      }
+    });
+
+  </script>
+</body>
+
 </html>
