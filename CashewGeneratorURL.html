@@ -955,6 +955,7 @@
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition = null;
     let isRecording = false;
+    let textoFinal = '';
 
     if (!SpeechRecognition) {
       micBtn.disabled = true;
@@ -964,12 +965,20 @@
       recognition.continuous = true;
       recognition.interimResults = true;
 
+
       recognition.onresult = (event) => {
-        const transcript = Array.from(event.results)
-          .map(result => result[0].transcript)
-          .join('');
-        searchInput.value = transcript;
+        let textoInterino = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            textoFinal += event.results[i][0].transcript;
+          } else {
+            textoInterino += event.results[i][0].transcript;
+          }
+        }
+
+        searchInput.value = textoFinal + textoInterino;
       };
+
 
       recognition.onerror = (event) => {
         console.error("Error de reconocimiento: ", event.error);
@@ -979,6 +988,7 @@
 
     function iniciarGrabacion() {
       try {
+        textoFinal = searchInput.value; // Mantiene el texto que ya estuviera en el cuadro
         recognition.start();
         isRecording = true;
         micBtn.classList.add('recording');
