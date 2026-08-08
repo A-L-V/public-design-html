@@ -963,22 +963,19 @@
       recognition = new SpeechRecognition();
       recognition.lang = 'es-ES';
       recognition.continuous = true;
-      recognition.interimResults = true;
+      recognition.interimResults = false;
 
 
       recognition.onresult = (event) => {
-        let textoInterino = '';
+        let textoNuevo = '';
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            textoFinal += event.results[i][0].transcript;
-          } else {
-            textoInterino += event.results[i][0].transcript;
-          }
+          textoNuevo += event.results[i][0].transcript;
         }
 
-        searchInput.value = textoFinal + textoInterino;
+        // Agrega el texto nuevo al input manteniendo lo anterior
+        searchInput.value = (searchInput.value + " " + textoNuevo).trim();
       };
-
 
       recognition.onerror = (event) => {
         console.error("Error de reconocimiento: ", event.error);
